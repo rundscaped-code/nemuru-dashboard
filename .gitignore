@@ -1,0 +1,13 @@
+# 機密
+*.key
+*token*.json
+*credentials*.json
+secrets/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 一時
+*.tmp
+*.log
