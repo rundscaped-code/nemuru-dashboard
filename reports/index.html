@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>週次レポート履歴｜永遠ねむる Analytics</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E%F0%9F%93%8A%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --md-sys-color-primary: #6750a4;
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-primary-container: #eaddff;
+    --md-sys-color-on-primary-container: #21005d;
+    --md-sys-color-secondary: #db2777;
+    --md-sys-color-secondary-container: #ffd9e2;
+    --md-sys-color-on-secondary-container: #3e0014;
+    --md-sys-color-tertiary: #f59e0b;
+    --md-sys-color-background: #fef7fa;
+    --md-sys-color-on-background: #1d1b20;
+    --md-sys-color-surface: #fef7ff;
+    --md-sys-color-on-surface: #1d1b20;
+    --md-sys-color-on-surface-variant: #49454f;
+    --md-sys-color-surface-container-low: #f7f2fa;
+    --md-sys-color-surface-container: #f3edf7;
+    --md-sys-color-surface-container-high: #ece6f0;
+    --md-sys-color-outline-variant: #cac4d0;
+    --md-sys-color-success: #2e7d32;
+    --md-shape-md: 12px;
+    --md-shape-lg: 16px;
+    --md-shape-full: 9999px;
+  }
+  [data-theme="dark"] {
+    --md-sys-color-primary: #d0bcff;
+    --md-sys-color-primary-container: #4f378b;
+    --md-sys-color-on-primary-container: #eaddff;
+    --md-sys-color-secondary: #f48fb1;
+    --md-sys-color-secondary-container: #7e2954;
+    --md-sys-color-on-secondary-container: #ffd9e2;
+    --md-sys-color-background: #141218;
+    --md-sys-color-on-background: #e6e0e9;
+    --md-sys-color-surface: #141218;
+    --md-sys-color-on-surface: #e6e0e9;
+    --md-sys-color-on-surface-variant: #cac4d0;
+    --md-sys-color-surface-container-low: #1d1b20;
+    --md-sys-color-surface-container: #211f26;
+    --md-sys-color-surface-container-high: #2b2930;
+    --md-sys-color-outline-variant: #49454f;
+    --md-sys-color-success: #81c995;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
+    font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.55;
+  }
+  .ms { font-family: 'Material Symbols Rounded'; font-size: 20px; vertical-align: middle; line-height: 1;}
+  .ms.sm { font-size: 18px; }
+  .container { max-width: 960px; margin: 0 auto; padding: 24px 16px 60px; }
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in oklab, var(--md-sys-color-surface) 90%, transparent);
+    backdrop-filter: saturate(180%) blur(16px);
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  }
+  .topbar-inner { max-width: 960px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; gap: 12px; height: 60px; }
+  .icon-btn {
+    border: 0; background: transparent; cursor: pointer;
+    width: 40px; height: 40px; border-radius: var(--md-shape-full);
+    color: var(--md-sys-color-on-surface-variant);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .icon-btn:hover { background: var(--md-sys-color-surface-container); }
+  .breadcrumb a { color: var(--md-sys-color-primary); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  h1 { font-size: clamp(28px, 4vw, 40px); margin: 0; line-height: 1.1; font-weight: 800; letter-spacing: -.01em; }
+  h1 .grad { background: linear-gradient(135deg, var(--md-sys-color-primary), var(--md-sys-color-secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .subtitle { color: var(--md-sys-color-on-surface-variant); margin: 8px 0 0; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 12px; border-radius: var(--md-shape-full);
+    font-size: 12px; font-weight: 600;
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+  }
+  .timeline { margin-top: 40px; position: relative; }
+  .timeline::before {
+    content: ''; position: absolute; left: 19px; top: 0; bottom: 0;
+    width: 2px; background: var(--md-sys-color-outline-variant);
+  }
+  .item {
+    position: relative; padding-left: 56px; margin-bottom: 20px;
+  }
+  .item .marker {
+    position: absolute; left: 8px; top: 0;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    box-shadow: 0 0 0 4px var(--md-sys-color-background);
+  }
+  .item.now .marker {
+    background: linear-gradient(135deg, var(--md-sys-color-primary), var(--md-sys-color-secondary));
+    color: white;
+  }
+  .item-card {
+    background: var(--md-sys-color-surface-container-low);
+    border-radius: var(--md-shape-lg);
+    padding: 18px 20px;
+    text-decoration: none;
+    color: var(--md-sys-color-on-surface);
+    display: block;
+    transition: background .2s, transform .2s;
+  }
+  .item-card:hover {
+    background: var(--md-sys-color-surface-container);
+    transform: translateX(4px);
+  }
+  .item-card .date { color: var(--md-sys-color-on-surface-variant); font-size: 13px; }
+  .item-card .title { font-weight: 600; font-size: 16px; margin: 4px 0; }
+  .item-card .summary { font-size: 13px; color: var(--md-sys-color-on-surface-variant); margin: 8px 0 12px; }
+  .item-card .stats { display: flex; gap: 16px; font-size: 12px; flex-wrap: wrap; }
+  .item-card .stats span { display: inline-flex; align-items: center; gap: 4px; color: var(--md-sys-color-on-surface-variant); }
+  .item-card .stats strong { color: var(--md-sys-color-on-surface); font-weight: 600; }
+  .item-card .arrow { color: var(--md-sys-color-primary); font-weight: 600; font-size: 13px; display: inline-flex; align-items: center; gap: 4px; }
+  .empty {
+    text-align: center; padding: 60px 20px;
+    background: var(--md-sys-color-surface-container-low);
+    border-radius: var(--md-shape-lg);
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--md-sys-color-outline-variant); color: var(--md-sys-color-on-surface-variant); font-size: 12px; text-align: center; }
+  footer a { color: var(--md-sys-color-primary); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="../" class="icon-btn" title="ダッシュボードに戻る"><span class="ms">arrow_back</span></a>
+    <div style="flex: 1;">
+      <div class="breadcrumb" style="font-size: 13px;">
+        <a href="../">📊 永遠ねむる Analytics</a>
+        <span style="color: var(--md-sys-color-on-surface-variant); margin: 0 6px;">/</span>
+        <span>週次レポート</span>
+      </div>
+    </div>
+    <button id="themeToggle" class="icon-btn" title="テーマ切替">
+      <span class="ms">contrast</span>
+    </button>
+  </div>
+</header>
+
+<main class="container">
+  <span class="pill"><span class="ms sm">history</span>履歴</span>
+  <h1 style="margin-top: 12px"><span class="grad">週次レポート</span> 履歴</h1>
+  <p class="subtitle">毎週月曜9時に自動配信される週次分析の履歴。新しい順に表示。</p>
+
+  <div class="timeline" id="timeline">
+    <!-- レポート 5/2 (Pre Live2D Baseline) -->
+    <div class="item now">
+      <div class="marker"><span class="ms sm">flag</span></div>
+      <a href="2026-05-02-pre-baseline.html" class="item-card">
+        <div class="date">2026-05-02 (金) ・ 基準スナップショット</div>
+        <div class="title">Pre Live2D ベースライン v1.0</div>
+        <div class="summary">5/20 Live2Dお披露目以降の成長を測る分母として、すべてのプラットフォームの初期値を固定。</div>
+        <div class="stats">
+          <span><span class="ms sm">live_tv</span><strong>4,000</strong> Twitch</span>
+          <span><span class="ms sm">play_circle</span><strong>1,050</strong> YouTube</span>
+          <span><span class="ms sm">alternate_email</span><strong>2,088</strong> X</span>
+          <span><span class="ms sm">emoji_events</span><strong>125%</strong> クラファン</span>
+        </div>
+        <div style="margin-top: 12px;">
+          <span class="arrow">詳細を見る <span class="ms sm">arrow_forward</span></span>
+        </div>
+      </a>
+    </div>
+
+    <!-- 5/4 以降の自動配信スロット（プレースホルダー） -->
+    <div class="item">
+      <div class="marker">予</div>
+      <div class="item-card" style="opacity: .5; cursor: default; pointer-events: none">
+        <div class="date">2026-05-04 (月) 9:00 自動配信予定</div>
+        <div class="title">Week 19 - Pre Live2D 第1回</div>
+        <div class="summary">scheduled-task が起動しデータ取得→分析→配信。完了後ここにリンクが追加される。</div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="marker">予</div>
+      <div class="item-card" style="opacity: .4; cursor: default; pointer-events: none">
+        <div class="date">2026-05-11 (月) 9:00 自動配信予定</div>
+        <div class="title">Week 20 - お披露目週</div>
+        <div class="summary">5/20直前の最終チェック・Twitchトップ掲載申請の進捗確認</div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="marker" style="background: linear-gradient(135deg, var(--md-sys-color-secondary), var(--md-sys-color-tertiary)); color: white;">🎂</div>
+      <div class="item-card" style="opacity: .5; cursor: default; pointer-events: none">
+        <div class="date">2026-05-20 (火) お披露目当日</div>
+        <div class="title">Live2D × 誕生日 イベントレポート</div>
+        <div class="summary">当日配信の同接ピーク・新規フォロワー獲得・XインプレッションをリアルタイムでDiscord配信</div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="marker">予</div>
+      <div class="item-card" style="opacity: .4; cursor: default; pointer-events: none">
+        <div class="date">2026-05-25 (月) 9:00 自動配信予定</div>
+        <div class="title">Post Live2D ベースライン v2.0</div>
+        <div class="summary">お披露目後7日間のリフト評価（KPI目標達成率の自動計算）</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>毎週月曜9時に Discord に週次レポート自動配信／<a href="../">ダッシュボードに戻る</a></p>
+    <p style="margin-top: 6px">Material Design 3 / Cowork Claude × Chrome MCP</p>
+  </footer>
+</main>
+
+<script>
+  (function(){
+    const k = 'nm-theme';
+    const root = document.documentElement;
+    const saved = localStorage.getItem(k);
+    if (saved) root.setAttribute('data-theme', saved);
+    else if (matchMedia('(prefers-color-scheme: dark)').matches) root.setAttribute('data-theme', 'dark');
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const cur = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', cur);
+      localStorage.setItem(k, cur);
+    });
+  })();
+</script>
+</body>
+</html>

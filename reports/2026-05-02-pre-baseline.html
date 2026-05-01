@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre Live2D ベースライン v1.0｜永遠ねむる Analytics</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E%F0%9F%93%85%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --md-sys-color-primary: #6750a4;
+    --md-sys-color-primary-container: #eaddff;
+    --md-sys-color-on-primary-container: #21005d;
+    --md-sys-color-secondary: #db2777;
+    --md-sys-color-secondary-container: #ffd9e2;
+    --md-sys-color-on-secondary-container: #3e0014;
+    --md-sys-color-tertiary: #f59e0b;
+    --md-sys-color-background: #fef7fa;
+    --md-sys-color-on-background: #1d1b20;
+    --md-sys-color-surface: #fef7ff;
+    --md-sys-color-on-surface: #1d1b20;
+    --md-sys-color-on-surface-variant: #49454f;
+    --md-sys-color-surface-container-low: #f7f2fa;
+    --md-sys-color-surface-container: #f3edf7;
+    --md-sys-color-surface-container-high: #ece6f0;
+    --md-sys-color-outline-variant: #cac4d0;
+    --md-sys-color-success: #2e7d32;
+    --md-sys-color-warning: #ea580c;
+    --md-shape-md: 12px;
+    --md-shape-lg: 16px;
+    --md-shape-full: 9999px;
+  }
+  [data-theme="dark"] {
+    --md-sys-color-primary: #d0bcff;
+    --md-sys-color-primary-container: #4f378b;
+    --md-sys-color-on-primary-container: #eaddff;
+    --md-sys-color-secondary: #f48fb1;
+    --md-sys-color-secondary-container: #7e2954;
+    --md-sys-color-on-secondary-container: #ffd9e2;
+    --md-sys-color-background: #141218;
+    --md-sys-color-on-background: #e6e0e9;
+    --md-sys-color-surface: #141218;
+    --md-sys-color-on-surface: #e6e0e9;
+    --md-sys-color-on-surface-variant: #cac4d0;
+    --md-sys-color-surface-container-low: #1d1b20;
+    --md-sys-color-surface-container: #211f26;
+    --md-sys-color-surface-container-high: #2b2930;
+    --md-sys-color-outline-variant: #49454f;
+    --md-sys-color-success: #81c995;
+    --md-sys-color-warning: #fb923c;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
+    font-family: 'Inter', 'Noto Sans JP', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+  .ms { font-family: 'Material Symbols Rounded'; font-size: 20px; vertical-align: middle; line-height: 1;}
+  .ms.sm { font-size: 18px; }
+  .container { max-width: 880px; margin: 0 auto; padding: 24px 16px 60px; }
+  .topbar { position: sticky; top: 0; z-index: 50;
+    background: color-mix(in oklab, var(--md-sys-color-surface) 90%, transparent);
+    backdrop-filter: saturate(180%) blur(16px);
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  }
+  .topbar-inner { max-width: 880px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; gap: 8px; height: 60px; }
+  .icon-btn { border: 0; background: transparent; cursor: pointer; width: 40px; height: 40px; border-radius: var(--md-shape-full); color: var(--md-sys-color-on-surface-variant); display: inline-flex; align-items: center; justify-content: center; }
+  .icon-btn:hover { background: var(--md-sys-color-surface-container); }
+  .breadcrumb { font-size: 13px; }
+  .breadcrumb a { color: var(--md-sys-color-primary); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: var(--md-shape-full); font-size: 12px; font-weight: 600; background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); }
+  h1 { font-size: clamp(28px, 4.5vw, 42px); margin: 12px 0 8px; line-height: 1.15; font-weight: 800; letter-spacing: -.01em; }
+  h1 .grad { background: linear-gradient(135deg, var(--md-sys-color-primary), var(--md-sys-color-secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .meta { color: var(--md-sys-color-on-surface-variant); font-size: 14px; }
+  h2 { font-size: 22px; margin: 36px 0 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  h2 .icon-circle { width: 32px; height: 32px; border-radius: var(--md-shape-full); background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); display: inline-flex; align-items: center; justify-content: center; }
+  h3 { font-size: 16px; margin: 20px 0 8px; font-weight: 600; }
+  p { margin: 0 0 12px; }
+  .card { background: var(--md-sys-color-surface-container-low); border-radius: var(--md-shape-lg); padding: 18px 20px; margin-bottom: 12px; }
+  .grid { display: grid; gap: 12px; }
+  .grid-2 { grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 720px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 720px) { .grid-4 { grid-template-columns: repeat(4, 1fr); } }
+  .stat { padding: 14px; background: var(--md-sys-color-surface-container-low); border-radius: var(--md-shape-md); }
+  .stat .label { font-size: 11px; color: var(--md-sys-color-on-surface-variant); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+  .stat .value { font-size: 22px; font-weight: 700; margin-top: 4px; line-height: 1.1; }
+  .stat .meta { font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px 10px; text-align: left; }
+  thead th { color: var(--md-sys-color-on-surface-variant); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+  tbody tr { border-top: 1px solid var(--md-sys-color-outline-variant); }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .banner { background: linear-gradient(135deg, color-mix(in oklab, var(--md-sys-color-tertiary) 12%, transparent), color-mix(in oklab, var(--md-sys-color-secondary) 6%, transparent)); border: 1px solid color-mix(in oklab, var(--md-sys-color-tertiary) 25%, transparent); border-radius: var(--md-shape-lg); padding: 18px; margin: 12px 0; }
+  .ok { color: var(--md-sys-color-success); font-weight: 600; }
+  .warn { color: var(--md-sys-color-warning); font-weight: 600; }
+  ul { padding-left: 20px; margin: 0 0 12px; }
+  li { margin-bottom: 6px; }
+  .key-finding { display: flex; gap: 10px; padding: 12px 16px; background: var(--md-sys-color-surface-container); border-left: 3px solid var(--md-sys-color-primary); border-radius: var(--md-shape-md); margin-bottom: 8px; }
+  .key-finding .badge { background: var(--md-sys-color-primary); color: white; min-width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+  footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--md-sys-color-outline-variant); color: var(--md-sys-color-on-surface-variant); font-size: 12px; text-align: center; }
+  footer a { color: var(--md-sys-color-primary); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="./" class="icon-btn" title="履歴に戻る"><span class="ms">arrow_back</span></a>
+    <div style="flex: 1;">
+      <div class="breadcrumb">
+        <a href="../">📊 Dashboard</a>
+        <span style="margin: 0 6px; color: var(--md-sys-color-on-surface-variant)">/</span>
+        <a href="./">週次レポート</a>
+        <span style="margin: 0 6px; color: var(--md-sys-color-on-surface-variant)">/</span>
+        <span>2026-05-02</span>
+      </div>
+    </div>
+    <button id="themeToggle" class="icon-btn" title="テーマ切替">
+      <span class="ms">contrast</span>
+    </button>
+  </div>
+</header>
+
+<main class="container">
+  <span class="pill"><span class="ms sm">flag</span>基準スナップショット</span>
+  <h1><span class="grad">Pre Live2D</span> ベースライン v1.0</h1>
+  <p class="meta">2026-05-02 (金) ／ 5/20 Live2Dお披露目以降の成長を測る分母</p>
+
+  <h2><span class="icon-circle"><span class="ms sm">flag</span></span>このレポートの位置づけ</h2>
+  <p>5/20 にねむるさんが <strong>Live2D 正式お披露目（=誕生日）</strong> を予定。本レポートは、その施策効果を測るための「Pre 状態」を全プラットフォーム横断で固定したもの。</p>
+  <p>5/27（日）の Post Live2D ベースライン v2.0 で、ここで固定した数字との差分を取り、施策効果を機械的に評価する。</p>
+
+  <h2><span class="icon-circle"><span class="ms sm">analytics</span></span>主要KPI</h2>
+  <div class="grid grid-4">
+    <div class="stat"><div class="label">Twitch Followers</div><div class="value">4,000</div><div class="meta">partner認証済</div></div>
+    <div class="stat"><div class="label">YouTube 両軸</div><div class="value">1,050</div><div class="meta">VAL 280 / カメラ 770</div></div>
+    <div class="stat"><div class="label">X VAL軸</div><div class="value">2,088</div><div class="meta">verified 239</div></div>
+    <div class="stat"><div class="label">クラファン</div><div class="value" style="color: var(--md-sys-color-tertiary)">125%</div><div class="meta">62.5万 / 50万</div></div>
+  </div>
+
+  <h2><span class="icon-circle" style="background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container)"><span class="ms sm">stars</span></span>重要発見Top5</h2>
+  <div class="key-finding"><div class="badge">1</div><div><strong>X が認知最大装置</strong>。VAL軸の年間 Imp 6.9M（YouTube両軸累計316Kの22倍）。月平均575K。Engagement rate 3.5%（業界平均の3倍）。</div></div>
+  <div class="key-finding"><div class="badge">2</div><div><strong>カメラ軸の登録転換率はVAL軸の1.6倍</strong>（0.237% vs 0.148%）。女性視聴率44%でVTuber業界では高水準。</div></div>
+  <div class="key-finding"><div class="badge">3</div><div><strong>VAL軸Top1「癖強ネオン」だけで113人新規登録</strong>（全体の40%超）。登録獲得効率が突出。</div></div>
+  <div class="key-finding"><div class="badge">4</div><div><strong>「野良異質遭遇型」フォーマットが X / YouTube / Twitch 全プラットフォームで最強</strong>。クロスプラットフォーム展開で効率最大化可能。</div></div>
+  <div class="key-finding"><div class="badge">5</div><div><strong>5/20はねむるさん誕生日</strong>。「誕生日 × Live2Dデビュー」のダブルストーリーが最強の告知武器。</div></div>
+
+  <h2><span class="icon-circle" style="background: #ffd9e2; color: #3e0014"><span class="ms sm">live_tv</span></span>Twitch（メイン主戦場）</h2>
+  <div class="card">
+    <div class="grid grid-3">
+      <div><div class="meta">broadcaster_type</div><strong>partner</strong><div class="meta" style="margin-top: 2px">2025-09頃取得</div></div>
+      <div><div class="meta">累計VOD再生</div><strong>313,154</strong></div>
+      <div><div class="meta">累計配信時間</div><strong>2,259h</strong></div>
+      <div><div class="meta">平均同接 (ALL)</div><strong>80人</strong></div>
+      <div><div class="meta">ピーク同接</div><strong>2,129人</strong> <span class="meta">(2026-02)</span></div>
+      <div><div class="meta">配信ペース</div><strong>6.6日/週・5h/日</strong></div>
+    </div>
+  </div>
+  <h3>月次推移（フォロワー獲得Top）</h3>
+  <table>
+    <thead><tr><th>月</th><th class="num">フォロワー獲得</th><th class="num">ピーク同接</th><th class="num">フォロワー累計</th></tr></thead>
+    <tbody>
+      <tr><td>2025-10</td><td class="num"><strong>+470</strong></td><td class="num">220</td><td class="num">2,801</td></tr>
+      <tr><td>2025-09</td><td class="num">+406</td><td class="num">150</td><td class="num">2,331</td></tr>
+      <tr><td>2025-12</td><td class="num">+404</td><td class="num">1,995</td><td class="num">3,481</td></tr>
+      <tr><td>2025-11</td><td class="num">+276</td><td class="num">158</td><td class="num">3,077</td></tr>
+      <tr><td>2026-01</td><td class="num">+224</td><td class="num">1,045</td><td class="num">3,705</td></tr>
+      <tr><td>2026-02</td><td class="num">+95</td><td class="num"><strong>2,129</strong></td><td class="num">3,800</td></tr>
+      <tr><td>2026-03</td><td class="num">+87</td><td class="num">1,727</td><td class="num">3,887</td></tr>
+      <tr><td>2026-04</td><td class="num">+82</td><td class="num">116</td><td class="num">3,969</td></tr>
+      <tr><td>2026-05</td><td class="num">+4</td><td class="num">74</td><td class="num">3,973</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="icon-circle" style="background: #fde7e9; color: #b3261e"><span class="ms sm">play_circle</span></span>YouTube（ファン化層）</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <h3 style="margin-top: 0">VAL軸（眠り姫・最注力）</h3>
+      <table>
+        <tr><td>登録者</td><td class="num"><strong>280</strong></td></tr>
+        <tr><td>累計再生</td><td class="num">118,518</td></tr>
+        <tr><td>動画本数</td><td class="num">11</td></tr>
+        <tr><td>動画あたり平均</td><td class="num"><strong>10,775</strong></td></tr>
+        <tr><td>男性比率</td><td class="num">92.1%</td></tr>
+        <tr><td>SHORTS流入</td><td class="num">95.5%</td></tr>
+        <tr><td>登録転換率</td><td class="num">0.148%</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3 style="margin-top: 0">カメラ軸（永遠ねむる・サブ）</h3>
+      <table>
+        <tr><td>登録者</td><td class="num"><strong>770</strong></td></tr>
+        <tr><td>累計再生</td><td class="num">197,257</td></tr>
+        <tr><td>動画本数</td><td class="num">66</td></tr>
+        <tr><td>動画あたり平均</td><td class="num">2,989</td></tr>
+        <tr><td>男女比</td><td class="num">男56% / <span class="ok">女44%</span></td></tr>
+        <tr><td>SHORTS流入</td><td class="num">87.7%</td></tr>
+        <tr><td>登録転換率</td><td class="num"><strong class="ok">0.237%</strong></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <h2><span class="icon-circle" style="background: #d8e6f7; color: #1565c0"><span class="ms sm">alternate_email</span></span>X（認知獲得装置）</h2>
+  <div class="card">
+    <h3 style="margin-top: 0">VAL軸 @numuru_zz（Premium加入済）</h3>
+    <div class="grid grid-3">
+      <div class="stat" style="background: var(--md-sys-color-surface-container)"><div class="label">Total Followers</div><div class="value">2,088</div><div class="meta">verified 239</div></div>
+      <div class="stat" style="background: var(--md-sys-color-surface-container)"><div class="label">年間 Imp</div><div class="value">6.9M</div><div class="meta">月平均 575K</div></div>
+      <div class="stat" style="background: var(--md-sys-color-surface-container)"><div class="label">年間 ER</div><div class="value">3.5%</div><div class="meta">業界平均の3倍</div></div>
+    </div>
+    <h3>過去3ヶ月Top5投稿</h3>
+    <table>
+      <thead><tr><th>日付</th><th class="num">Imp</th><th class="num">Likes</th><th class="num">RT</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td>2026-02-07</td><td class="num"><strong>266K</strong></td><td class="num">10K</td><td class="num">1.1K</td><td>ｽﾋﾟｰﾄﾞ サイトエントリー</td></tr>
+        <tr><td>2026-03-04</td><td class="num">99K</td><td class="num">185</td><td class="num">3</td><td>キルした敵の武器取られる許せん</td></tr>
+        <tr><td>2026-02-05</td><td class="num">85K</td><td class="num">246</td><td class="num">8</td><td>チートかと思った</td></tr>
+        <tr><td>2026-04-03</td><td class="num">64K</td><td class="num">574</td><td class="num">47</td><td>ど偏見キャラピック #VALORANT</td></tr>
+        <tr><td>2026-02-09</td><td class="num">57K</td><td class="num">2.6K</td><td class="num">297</td><td>ｽﾋﾟｰﾄﾞ とスパイク</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top: 12px; font-size: 13px; color: var(--md-sys-color-on-surface-variant)">
+      Top10合計 <strong>724K Imp</strong>、うち<strong class="ok">VALORANT切り抜き系が607K（83.8%）</strong>。
+    </p>
+  </div>
+
+  <h2><span class="icon-circle" style="background: #fef0c4; color: #ea580c"><span class="ms sm">local_fire_department</span></span>黄金フォーマット解析</h2>
+  <p>whisper large-v3 で文字起こしした両軸Top3（計6本）から抽出した <strong>9パターンの台本テンプレ</strong>。</p>
+  <h3>共通DNA</h3>
+  <ul>
+    <li>冒頭3秒で「異質・疑問・ツッコミ」のフック（即座に「何か」が起きる）</li>
+    <li>関西イントネーションのテンポツッコミ</li>
+    <li>30秒以内に1つ以上のオチ</li>
+    <li>説明・前置きはゼロ</li>
+    <li><strong>X / YouTube / Twitch 全プラットフォームで同じ「野良異質遭遇型」が最強</strong></li>
+  </ul>
+
+  <h2><span class="icon-circle" style="background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container)"><span class="ms sm">cake</span></span>5/20 までのアクション</h2>
+  <ul>
+    <li><span class="ok">✅ Phase A</span> 5/2-5/5 ベースライン固定（このレポート）</li>
+    <li><span class="ok">✅ Phase B</span> 5/3-5/12 黄金フォーマット解明（v1完了）</li>
+    <li><span class="warn">⏳ Phase C</span> 5/8-5/15 お披露目企画＋Twitchトップ申請</li>
+    <li>Phase D: 5/16-5/19 プレローンチ告知</li>
+    <li>Phase E: <strong>5/20 当日（誕生日 × Live2Dお披露目）</strong></li>
+    <li>Phase F: 5/21-5/27 ポストローンチ・切り抜き量産</li>
+  </ul>
+
+  <div class="banner">
+    <h3 style="margin: 0 0 8px"><span class="ms" style="color: var(--md-sys-color-tertiary); vertical-align: middle">warning</span> 異常値の解釈</h3>
+    <p style="margin: 0; font-size: 13px;">トップページ掲載VOD（153,994再生）はTwitchトップへのアクセスでカウントされる仕様。実視聴者数ではなくインプレッションに近い値。真のインパクトはユニーク視聴者・同接ピーク・新規Sub獲得で測る（broadcaster認証必須・後日）。</p>
+  </div>
+
+  <footer>
+    <p><a href="./">← 週次レポート履歴に戻る</a> ／ <a href="../">📊 ダッシュボード</a></p>
+    <p style="margin-top: 6px">Cowork Claude × Chrome MCP / Material Design 3</p>
+  </footer>
+</main>
+
+<script>
+  (function(){
+    const k = 'nm-theme';
+    const root = document.documentElement;
+    const saved = localStorage.getItem(k);
+    if (saved) root.setAttribute('data-theme', saved);
+    else if (matchMedia('(prefers-color-scheme: dark)').matches) root.setAttribute('data-theme', 'dark');
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const cur = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', cur);
+      localStorage.setItem(k, cur);
+    });
+  })();
+</script>
+</body>
+</html>

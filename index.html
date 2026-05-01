@@ -2,626 +2,662 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
-<meta name="theme-color" content="#0a0a0f">
-<title>永遠ねむる｜Analytics Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1d1b20" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#fef7ff" media="(prefers-color-scheme: light)">
+<title>永遠ねむる｜Analytics</title>
 <meta name="description" content="永遠ねむる（VTuber）のYouTube/Twitch/Xアナリティクス統合ダッシュボード">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E%F0%9F%8C%99%3C/text%3E%3C/svg%3E">
-<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Material Design 3: Fonts + Symbols + Color tokens -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
 <style>
+  /* === Material Design 3 Color Tokens === */
   :root {
-    --bg: #0a0a0f;
-    --surface: #131320;
-    --surface-2: #1c1c2e;
-    --border: #2a2a3e;
-    --text: #f5f5f9;
-    --muted: #9999b0;
-    --accent: #a78bfa;
-    --accent-2: #f472b6;
-    --green: #34d399;
-    --orange: #fb923c;
-    --red: #fb7185;
-    --blue: #60a5fa;
+    /* Light scheme */
+    --md-sys-color-primary: #6750a4;
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-primary-container: #eaddff;
+    --md-sys-color-on-primary-container: #21005d;
+
+    --md-sys-color-secondary: #db2777;
+    --md-sys-color-on-secondary: #ffffff;
+    --md-sys-color-secondary-container: #ffd9e2;
+    --md-sys-color-on-secondary-container: #3e0014;
+
+    --md-sys-color-tertiary: #f59e0b;
+    --md-sys-color-on-tertiary: #ffffff;
+
+    --md-sys-color-error: #b3261e;
+
+    --md-sys-color-background: #fef7ff;
+    --md-sys-color-on-background: #1d1b20;
+    --md-sys-color-surface: #fef7ff;
+    --md-sys-color-on-surface: #1d1b20;
+    --md-sys-color-on-surface-variant: #49454f;
+
+    --md-sys-color-surface-dim: #ded8e1;
+    --md-sys-color-surface-bright: #fef7ff;
+    --md-sys-color-surface-container-lowest: #ffffff;
+    --md-sys-color-surface-container-low: #f7f2fa;
+    --md-sys-color-surface-container: #f3edf7;
+    --md-sys-color-surface-container-high: #ece6f0;
+    --md-sys-color-surface-container-highest: #e6e0e9;
+
+    --md-sys-color-outline: #79747e;
+    --md-sys-color-outline-variant: #cac4d0;
+
+    --md-sys-color-success: #2e7d32;
+    --md-sys-color-warning: #ea580c;
+
+    /* Elevation shadows */
+    --md-elevation-1: 0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+    --md-elevation-2: 0 1px 2px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.06);
+    --md-elevation-3: 0 1px 3px rgba(0,0,0,0.06), 0 4px 8px rgba(0,0,0,0.08);
+
+    /* Shape */
+    --md-shape-xs: 4px;
+    --md-shape-sm: 8px;
+    --md-shape-md: 12px;
+    --md-shape-lg: 16px;
+    --md-shape-xl: 28px;
+    --md-shape-full: 9999px;
   }
-  [data-theme="light"] {
-    --bg: #f8f9fc;
-    --surface: #ffffff;
-    --surface-2: #f1f3f9;
-    --border: #e3e5ee;
-    --text: #1a1a2e;
-    --muted: #6b6b85;
-    --accent: #7c3aed;
-    --accent-2: #db2777;
-    --green: #059669;
-    --orange: #ea580c;
-    --red: #e11d48;
-    --blue: #2563eb;
+  [data-theme="dark"] {
+    --md-sys-color-primary: #d0bcff;
+    --md-sys-color-on-primary: #381e72;
+    --md-sys-color-primary-container: #4f378b;
+    --md-sys-color-on-primary-container: #eaddff;
+
+    --md-sys-color-secondary: #f48fb1;
+    --md-sys-color-on-secondary: #5c1138;
+    --md-sys-color-secondary-container: #7e2954;
+    --md-sys-color-on-secondary-container: #ffd9e2;
+
+    --md-sys-color-tertiary: #fbbf24;
+
+    --md-sys-color-background: #141218;
+    --md-sys-color-on-background: #e6e0e9;
+    --md-sys-color-surface: #141218;
+    --md-sys-color-on-surface: #e6e0e9;
+    --md-sys-color-on-surface-variant: #cac4d0;
+
+    --md-sys-color-surface-dim: #141218;
+    --md-sys-color-surface-bright: #3b383e;
+    --md-sys-color-surface-container-lowest: #0f0d13;
+    --md-sys-color-surface-container-low: #1d1b20;
+    --md-sys-color-surface-container: #211f26;
+    --md-sys-color-surface-container-high: #2b2930;
+    --md-sys-color-surface-container-highest: #36343b;
+
+    --md-sys-color-outline: #938f99;
+    --md-sys-color-outline-variant: #49454f;
+
+    --md-sys-color-success: #81c995;
+    --md-sys-color-warning: #fb923c;
   }
+
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
   body {
     margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic UI', sans-serif;
-    font-feature-settings: 'cv11', 'ss01', 'ss03';
+    background: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
+    font-family: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
     -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
   }
-  .glass {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    transition: transform .25s ease, border-color .25s ease;
+
+  /* === Material Symbols === */
+  .ms { font-family: 'Material Symbols Rounded'; font-weight: normal; font-style: normal; font-size: 20px;
+    line-height: 1; letter-spacing: normal; text-transform: none; display: inline-block; vertical-align: middle;
+    white-space: nowrap; word-wrap: normal; direction: ltr; -webkit-font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased;
   }
-  .glass:hover { border-color: color-mix(in oklab, var(--accent) 40%, var(--border)); }
-  .grad-text {
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .ms.sm { font-size: 18px; }
+  .ms.lg { font-size: 28px; }
+
+  /* === Typography Scale (M3) === */
+  .md-display-l { font-size: clamp(40px,7vw,57px); line-height: 1.05; font-weight: 800; letter-spacing: -.02em; }
+  .md-display-m { font-size: clamp(32px,5vw,45px); line-height: 1.1; font-weight: 700; letter-spacing: -.01em; }
+  .md-headline-l { font-size: clamp(24px,3.5vw,32px); line-height: 1.2; font-weight: 700; }
+  .md-headline-m { font-size: 24px; line-height: 1.25; font-weight: 700; }
+  .md-headline-s { font-size: 20px; line-height: 1.3; font-weight: 600; }
+  .md-title-m { font-size: 16px; line-height: 1.4; font-weight: 600; }
+  .md-title-s { font-size: 14px; line-height: 1.4; font-weight: 600; }
+  .md-body-l { font-size: 16px; line-height: 1.55; }
+  .md-body-m { font-size: 14px; line-height: 1.55; }
+  .md-body-s { font-size: 12px; line-height: 1.5; }
+  .md-label-l { font-size: 14px; line-height: 1.4; font-weight: 600; letter-spacing: .01em; }
+  .md-label-m { font-size: 12px; line-height: 1.3; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+
+  /* === Layout === */
+  .container { max-width: 1240px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 768px) { .container { padding: 0 24px; } }
+  .section { padding: 32px 0; }
+
+  /* === Top App Bar === */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in oklab, var(--md-sys-color-surface) 88%, transparent);
+    backdrop-filter: saturate(180%) blur(16px);
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
   }
-  .hero-bg {
-    position: absolute; inset: 0;
+  .topbar-inner { display: flex; align-items: center; gap: 16px; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+  .brand .logo { font-size: 26px; }
+  .nav-tabs { display: none; gap: 4px; flex: 1; justify-content: center; }
+  @media (min-width: 1024px) { .nav-tabs { display: flex; } }
+  .nav-tab {
+    text-decoration: none; color: var(--md-sys-color-on-surface-variant);
+    padding: 8px 14px; border-radius: var(--md-shape-full);
+    font-size: 13px; font-weight: 500;
+    transition: background .2s, color .2s;
+  }
+  .nav-tab:hover { background: var(--md-sys-color-surface-container); color: var(--md-sys-color-on-surface); }
+  .nav-tab.active {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    font-weight: 600;
+  }
+  .icon-btn {
+    border: 0; background: transparent; cursor: pointer;
+    width: 40px; height: 40px; border-radius: var(--md-shape-full);
+    color: var(--md-sys-color-on-surface-variant);
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  .icon-btn:hover { background: var(--md-sys-color-surface-container); color: var(--md-sys-color-on-surface); }
+
+  /* === Hero === */
+  .hero {
+    position: relative; overflow: hidden; padding: 48px 0 32px;
     background:
-      radial-gradient(800px 400px at 20% 0%, rgba(167,139,250,.20), transparent 60%),
-      radial-gradient(600px 400px at 80% 0%, rgba(244,114,182,.15), transparent 60%);
-    pointer-events: none;
+      radial-gradient(800px 400px at 18% -10%, color-mix(in oklab, var(--md-sys-color-primary) 18%, transparent), transparent 60%),
+      radial-gradient(700px 400px at 80% -10%, color-mix(in oklab, var(--md-sys-color-secondary) 14%, transparent), transparent 60%);
   }
-  .pulse {
-    animation: pulse 2s ease-in-out infinite;
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: var(--md-shape-full);
+    font-size: 13px; font-weight: 600;
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
   }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: .6; }
+  .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--md-sys-color-success); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+
+  /* === Cards === */
+  .card {
+    background: var(--md-sys-color-surface-container-low);
+    border-radius: var(--md-shape-lg);
+    padding: 20px;
+    transition: background .2s, transform .2s;
   }
-  .fade-up {
-    animation: fadeUp .6s ease-out backwards;
+  .card.elev { box-shadow: var(--md-elevation-1); }
+  .card.elev:hover { background: var(--md-sys-color-surface-container); box-shadow: var(--md-elevation-2); }
+  .card-tonal { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); }
+  .card-tonal-secondary { background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); }
+  .card-outlined { background: transparent; border: 1px solid var(--md-sys-color-outline-variant); }
+
+  /* === Grid === */
+  .grid { display: grid; gap: 12px; }
+  .grid-kpi { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 768px) { .grid-kpi { grid-template-columns: repeat(4, 1fr); } }
+  .grid-2 { grid-template-columns: 1fr; }
+  @media (min-width: 1024px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+  .grid-3 { grid-template-columns: 1fr; }
+  @media (min-width: 768px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+
+  /* === KPI Card === */
+  .kpi { display: flex; flex-direction: column; gap: 4px; padding: 16px; min-height: 110px; justify-content: center; }
+  .kpi .label { font-size: 12px; color: var(--md-sys-color-on-surface-variant); display: flex; align-items: center; gap: 6px; }
+  .kpi .value { font-size: 28px; font-weight: 700; letter-spacing: -.01em; line-height: 1.1; }
+  .kpi .meta { font-size: 11px; color: var(--md-sys-color-on-surface-variant); }
+  .kpi .delta-up { color: var(--md-sys-color-success); font-weight: 600; }
+  .kpi .delta-down { color: var(--md-sys-color-error); font-weight: 600; }
+
+  /* === Section Heading === */
+  .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .section-head .icon-circle {
+    width: 36px; height: 36px; border-radius: var(--md-shape-full);
+    background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);
+    display: flex; align-items: center; justify-content: center;
   }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .nav-link.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-  ::-webkit-scrollbar { width: 8px; height: 8px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-  /* Chart container */
+
+  /* === Chart === */
   .chart-wrap { position: relative; height: 280px; }
   .chart-wrap.tall { height: 360px; }
-  /* big number animation */
-  @keyframes count {
-    from { opacity: 0; transform: scale(.92); }
-    to { opacity: 1; transform: scale(1); }
+
+  /* === Notes === */
+  .note {
+    background: var(--md-sys-color-surface-container);
+    border-radius: var(--md-shape-md);
+    padding: 12px 16px;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 13px;
   }
-  .big-num { animation: count .5s ease-out backwards; }
-  /* sparkline mini */
-  .spark { width: 80px; height: 24px; }
+
+  /* === Banner (warning) === */
+  .banner {
+    background: linear-gradient(135deg,
+      color-mix(in oklab, var(--md-sys-color-tertiary) 15%, transparent),
+      color-mix(in oklab, var(--md-sys-color-secondary) 8%, transparent));
+    border: 1px solid color-mix(in oklab, var(--md-sys-color-tertiary) 30%, transparent);
+    border-radius: var(--md-shape-lg);
+    padding: 20px;
+  }
+
+  /* === Table === */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 10px 12px; text-align: left; }
+  thead th { color: var(--md-sys-color-on-surface-variant); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+  tbody tr { border-top: 1px solid var(--md-sys-color-outline-variant); }
+  tbody tr:hover { background: color-mix(in oklab, var(--md-sys-color-on-surface) 4%, transparent); }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* === Filled tonal button === */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px;
+    border-radius: var(--md-shape-full);
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    text-decoration: none;
+    font-weight: 600; font-size: 14px;
+    transition: background .2s, box-shadow .2s;
+    box-shadow: var(--md-elevation-1);
+  }
+  .btn:hover { box-shadow: var(--md-elevation-2); background: color-mix(in oklab, var(--md-sys-color-primary-container) 80%, var(--md-sys-color-primary)); }
+
+  /* === Details (M3 expressive) === */
+  details {
+    background: var(--md-sys-color-surface-container-low);
+    border-radius: var(--md-shape-md);
+    padding: 14px 18px;
+    margin-bottom: 8px;
+  }
+  details[open] { background: var(--md-sys-color-surface-container); }
+  details > summary {
+    cursor: pointer; font-weight: 600; font-size: 14px;
+    list-style: none; display: flex; align-items: center; gap: 8px;
+  }
+  details > summary::before { content: "expand_more"; font-family: 'Material Symbols Rounded'; transition: transform .2s; }
+  details[open] > summary::before { transform: rotate(180deg); }
+  details pre {
+    background: var(--md-sys-color-surface-container-highest);
+    color: var(--md-sys-color-on-surface);
+    padding: 12px; border-radius: var(--md-shape-sm);
+    font-size: 12px; margin: 12px 0 0; overflow-x: auto;
+    white-space: pre-wrap; word-wrap: break-word;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  /* === Timeline === */
+  .timeline-item { display: flex; gap: 12px; padding: 12px; border-radius: var(--md-shape-md); }
+  .timeline-item:hover { background: var(--md-sys-color-surface-container-low); }
+  .timeline-badge { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 700; font-size: 13px; color: white; }
+  .badge-done { background: var(--md-sys-color-success); }
+  .badge-now { background: var(--md-sys-color-tertiary); }
+  .badge-todo { background: var(--md-sys-color-outline); }
+  .badge-event { background: linear-gradient(135deg, var(--md-sys-color-primary), var(--md-sys-color-secondary)); }
+
+  /* === Progress === */
+  .progress-track { height: 6px; border-radius: var(--md-shape-full); background: var(--md-sys-color-surface-container-high); overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: var(--md-shape-full); background: linear-gradient(90deg, var(--md-sys-color-primary), var(--md-sys-color-secondary)); transition: width .8s ease; }
+
+  /* === Footer === */
+  .footer {
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+    padding: 32px 0;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 12px;
+    text-align: center;
+  }
+  .footer a { color: var(--md-sys-color-primary); text-decoration: none; }
+
+  /* === Anim === */
+  .reveal { opacity: 0; transform: translateY(8px); transition: opacity .5s, transform .5s; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--md-sys-color-surface-container-low); }
+  ::-webkit-scrollbar-thumb { background: var(--md-sys-color-outline-variant); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--md-sys-color-outline); }
 </style>
 </head>
-<body class="antialiased">
+<body>
 
-<!-- Sticky Top Nav -->
-<nav class="sticky top-0 z-40 backdrop-blur" style="background: color-mix(in oklab, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border);">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14">
-    <div class="flex items-center gap-3">
-      <span class="text-2xl">🌙</span>
-      <span class="font-bold text-base sm:text-lg">永遠ねむる Analytics</span>
+<!-- Top App Bar -->
+<header class="topbar">
+  <div class="container topbar-inner">
+    <div class="brand">
+      <span class="logo">🌙</span>
+      <span>永遠ねむる Analytics</span>
     </div>
-    <div class="hidden lg:flex items-center gap-6 text-sm">
-      <a href="#kpi" class="nav-link border-b-2 border-transparent pb-1 hover:opacity-100 opacity-70">KPI</a>
-      <a href="#twitch" class="nav-link border-b-2 border-transparent pb-1 hover:opacity-100 opacity-70">Twitch</a>
-      <a href="#youtube" class="nav-link border-b-2 border-transparent pb-1 hover:opacity-100 opacity-70">YouTube</a>
-      <a href="#x" class="nav-link border-b-2 border-transparent pb-1 hover:opacity-100 opacity-70">X</a>
-      <a href="#format" class="nav-link border-b-2 border-transparent pb-1 hover:opacity-100 opacity-70">黄金フォーマット</a>
-      <a href="#plan" class="nav-link border-b-2 border-transparent pb-1 hover:opacity-100 opacity-70">5/20プラン</a>
-    </div>
-    <button id="themeToggle" class="rounded-lg p-2 hover:bg-white/5 transition" title="テーマ切替">
-      <i data-lucide="sun-moon" class="w-4 h-4"></i>
+    <nav class="nav-tabs">
+      <a href="#kpi" class="nav-tab">KPI</a>
+      <a href="#twitch" class="nav-tab">Twitch</a>
+      <a href="#youtube" class="nav-tab">YouTube</a>
+      <a href="#x" class="nav-tab">X</a>
+      <a href="#format" class="nav-tab">フォーマット</a>
+      <a href="#plan" class="nav-tab">5/20プラン</a>
+    </nav>
+    <a href="reports/" class="btn" style="padding: 8px 14px; font-size: 13px">
+      <span class="ms sm">history</span>
+      <span class="hidden sm:inline">週次レポート</span>
+    </a>
+    <button id="themeToggle" class="icon-btn" title="テーマ切替">
+      <span class="ms">contrast</span>
     </button>
-  </div>
-</nav>
-
-<!-- Hero -->
-<header class="relative overflow-hidden">
-  <div class="hero-bg"></div>
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-10">
-    <div class="fade-up" style="animation-delay: .05s">
-      <div class="inline-flex items-center gap-2 text-xs font-medium px-3 py-1 rounded-full" style="background: color-mix(in oklab, var(--accent) 15%, transparent); color: var(--accent)">
-        <span class="w-2 h-2 rounded-full pulse" style="background: var(--green)"></span>
-        Pre Live2D ベースライン v1.0
-      </div>
-      <h1 class="mt-4 text-3xl sm:text-5xl font-extrabold tracking-tight">
-        永遠ねむる<span class="grad-text">アナリティクス</span>
-      </h1>
-      <p class="mt-3 text-sm sm:text-base" style="color: var(--muted)">
-        固定日 2026-05-02 ／ 5/20 Live2Dお披露目（=ねむるさん誕生日）以降の成長を測る分母
-      </p>
-    </div>
-
-    <!-- Countdown -->
-    <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3 fade-up" style="animation-delay: .15s">
-      <div class="glass p-5 sm:col-span-2">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="text-xs uppercase tracking-wider" style="color: var(--muted)">5/20 Live2Dお披露目まで</div>
-            <div class="mt-1 text-5xl sm:text-6xl font-extrabold grad-text" id="countdown-big">--</div>
-            <div class="text-sm" style="color: var(--muted)">日</div>
-          </div>
-          <div class="hidden sm:block text-right">
-            <div class="text-xs" style="color: var(--muted)">target</div>
-            <div class="text-base font-medium">2026-05-20 21:00 JST</div>
-            <div class="text-xs mt-1" style="color: var(--muted)">ねむるさん誕生日</div>
-          </div>
-        </div>
-      </div>
-      <div class="glass p-5">
-        <div class="text-xs uppercase tracking-wider" style="color: var(--muted)">最終更新</div>
-        <div class="mt-2 text-base font-semibold" id="lastUpdated">--</div>
-        <div class="mt-3 text-xs" style="color: var(--muted)">表示時刻</div>
-        <div class="text-sm" id="nowTime">--</div>
-      </div>
-    </div>
   </div>
 </header>
 
-<main class="max-w-7xl mx-auto px-4 sm:px-6 pb-20 space-y-12">
-
-  <!-- KPI -->
-  <section id="kpi" class="space-y-4">
-    <div class="flex items-center gap-2">
-      <i data-lucide="bar-chart-3" class="w-5 h-5" style="color: var(--accent)"></i>
-      <h2 class="text-xl font-bold">KPIスナップショット</h2>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-      <div class="glass p-4 fade-up" style="animation-delay: .05s">
-        <div class="flex items-center gap-2 text-xs" style="color: var(--muted)">
-          <i data-lucide="tv" class="w-3.5 h-3.5"></i> Twitch Followers
-        </div>
-        <div class="big-num mt-2 text-3xl font-bold">4,000</div>
-        <div class="text-xs mt-1" style="color: var(--muted)">partner認証済</div>
-      </div>
-      <div class="glass p-4 fade-up" style="animation-delay: .1s">
-        <div class="flex items-center gap-2 text-xs" style="color: var(--muted)">
-          <i data-lucide="play" class="w-3.5 h-3.5"></i> Twitch VOD累計再生
-        </div>
-        <div class="big-num mt-2 text-3xl font-bold">313K</div>
-        <div class="text-xs mt-1" style="color: var(--muted)">回</div>
-      </div>
-      <div class="glass p-4 fade-up" style="animation-delay: .15s">
-        <div class="flex items-center gap-2 text-xs" style="color: var(--muted)">
-          <i data-lucide="users" class="w-3.5 h-3.5"></i> YouTube 両軸登録
-        </div>
-        <div class="big-num mt-2 text-3xl font-bold">1,050</div>
-        <div class="text-xs mt-1" style="color: var(--muted)">VAL 280 / カメラ 770</div>
-      </div>
-      <div class="glass p-4 fade-up" style="animation-delay: .2s">
-        <div class="flex items-center gap-2 text-xs" style="color: var(--muted)">
-          <i data-lucide="twitter" class="w-3.5 h-3.5"></i> X VAL軸 Followers
-        </div>
-        <div class="big-num mt-2 text-3xl font-bold">2,088</div>
-        <div class="text-xs mt-1" style="color: var(--muted)">年Imp 6.9M</div>
-      </div>
-      <div class="glass p-4 fade-up" style="animation-delay: .25s">
-        <div class="flex items-center gap-2 text-xs" style="color: var(--muted)">
-          <i data-lucide="zap" class="w-3.5 h-3.5"></i> X 月平均 Imp
-        </div>
-        <div class="big-num mt-2 text-3xl font-bold">575K</div>
-        <div class="text-xs mt-1" style="color: var(--green)">YT累計を毎月生成</div>
-      </div>
-      <div class="glass p-4 fade-up" style="animation-delay: .3s">
-        <div class="flex items-center gap-2 text-xs" style="color: var(--muted)">
-          <i data-lucide="target" class="w-3.5 h-3.5"></i> X 直近7日 ER
-        </div>
-        <div class="big-num mt-2 text-3xl font-bold">5.5%</div>
-        <div class="text-xs mt-1" style="color: var(--green)">前週比 +15%</div>
-      </div>
-      <div class="glass p-4 fade-up" style="animation-delay: .35s">
-        <div class="flex items-center gap-2 text-xs" style="color: var(--muted)">
-          <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> 配信ペース
-        </div>
-        <div class="big-num mt-2 text-3xl font-bold">6.6<span class="text-sm font-medium ml-1">日/週</span></div>
-        <div class="text-xs mt-1" style="color: var(--muted)">5h/日</div>
-      </div>
-      <div class="glass p-4 fade-up" style="animation-delay: .4s">
-        <div class="flex items-center gap-2 text-xs" style="color: var(--muted)">
-          <i data-lucide="trophy" class="w-3.5 h-3.5"></i> クラファン達成率
-        </div>
-        <div class="big-num mt-2 text-3xl font-bold" style="color: var(--orange)">125%</div>
-        <div class="text-xs mt-1" style="color: var(--muted)">目標50万→62.5万</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 異常値 -->
-  <section class="space-y-3">
-    <div class="glass p-5" style="background: linear-gradient(135deg, rgba(251,146,60,.08), rgba(251,113,133,.06)); border-color: rgba(251,146,60,.3)">
-      <div class="flex items-center gap-2 mb-3">
-        <i data-lucide="alert-triangle" class="w-5 h-5" style="color: var(--orange)"></i>
-        <h3 class="font-bold" style="color: var(--orange)">異常値（メイングラフから分離）</h3>
-      </div>
-      <p class="text-sm mb-4" style="color: var(--muted)">
-        メイングラフは通常運用ベースを見るため、Twitchトップページ掲載などの単発施策値を以下に切り出しています。トップページ掲載の再生数は「アクセスされるだけでカウント」の仕様で、実視聴者数ではなくインプレッションに近い値。真のインパクトはユニーク視聴者・同接ピーク・新規Sub獲得で測ります（broadcaster認証必須・後日）。
-      </p>
-      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
-        <div class="rounded-lg p-3" style="background: rgba(255,255,255,.03)">
-          <div class="text-2xl font-bold" style="color: var(--orange)">153,994</div>
-          <div class="text-xs mt-1" style="color: var(--muted)">VOD「ランク上げ」(3/25)<br>★トップ掲載</div>
-        </div>
-        <div class="rounded-lg p-3" style="background: rgba(255,255,255,.03)">
-          <div class="text-2xl font-bold" style="color: var(--orange)">2,129</div>
-          <div class="text-xs mt-1" style="color: var(--muted)">月次ピーク同接 (2026-02)</div>
-        </div>
-        <div class="rounded-lg p-3" style="background: rgba(255,255,255,.03)">
-          <div class="text-2xl font-bold" style="color: var(--orange)">1,995</div>
-          <div class="text-xs mt-1" style="color: var(--muted)">月次ピーク同接 (2025-12)</div>
-        </div>
-        <div class="rounded-lg p-3" style="background: rgba(255,255,255,.03)">
-          <div class="text-2xl font-bold" style="color: var(--orange)">1,727</div>
-          <div class="text-xs mt-1" style="color: var(--muted)">月次ピーク同接 (2026-03)</div>
-        </div>
-        <div class="rounded-lg p-3" style="background: rgba(255,255,255,.03)">
-          <div class="text-2xl font-bold" style="color: var(--orange)">1,045</div>
-          <div class="text-xs mt-1" style="color: var(--muted)">月次ピーク同接 (2026-01)</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TWITCH -->
-  <section id="twitch" class="space-y-4">
-    <div class="flex items-center gap-2">
-      <i data-lucide="tv" class="w-5 h-5" style="color: var(--accent-2)"></i>
-      <h2 class="text-xl font-bold">Twitch <span class="text-sm font-medium" style="color: var(--muted)">— メイン主戦場</span></h2>
-    </div>
-    <div class="text-sm rounded-lg p-3" style="background: var(--surface-2); color: var(--muted)">
-      <strong style="color: var(--text)">partner認証済</strong>（2024-12開設→2025-09頃取得・約9ヶ月）／配信ペース 6.6日/週・5h/日／獲得効率 1.7人/h
-    </div>
-    <div class="grid lg:grid-cols-2 gap-4">
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">累計フォロワー数推移</h3>
-        <div class="chart-wrap"><canvas id="cumFollowers"></canvas></div>
-      </div>
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">月次フォロワー獲得</h3>
-        <div class="chart-wrap"><canvas id="followerGain"></canvas></div>
-      </div>
-    </div>
-    <div class="grid lg:grid-cols-2 gap-4">
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">月次ピーク同接（異常値除外）</h3>
-        <div class="chart-wrap"><canvas id="peakNormal"></canvas></div>
-        <p class="text-xs mt-2" style="color: var(--muted)">トップ掲載月（オレンジ）はY=300にクリップ。通常運用は120〜220のレンジ。</p>
-      </div>
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">曜日別 平均同接 (UTC)</h3>
-        <div class="chart-wrap"><canvas id="weekday"></canvas></div>
-        <p class="text-xs mt-2" style="color: var(--muted)">木曜が最強(85)。<strong style="color: var(--green)">5/22木曜にお披露目フォロー配信</strong>を入れると曜日効果＋お披露目余韻でブースト可。</p>
-      </div>
-    </div>
-    <div class="glass p-5">
-      <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">VOD Top10 (★トップ掲載動画は別枠)</h3>
-      <div class="chart-wrap tall"><canvas id="vodTop"></canvas></div>
-    </div>
-  </section>
-
-  <!-- YOUTUBE -->
-  <section id="youtube" class="space-y-4">
-    <div class="flex items-center gap-2">
-      <i data-lucide="play-circle" class="w-5 h-5" style="color: var(--red)"></i>
-      <h2 class="text-xl font-bold">YouTube <span class="text-sm font-medium" style="color: var(--muted)">— ファン化層</span></h2>
-    </div>
-    <div class="grid lg:grid-cols-2 gap-4">
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">流入元の比較 (%)</h3>
-        <div class="chart-wrap"><canvas id="ytTraffic"></canvas></div>
-        <p class="text-xs mt-2" style="color: var(--muted)">VAL軸 Shorts95.5% / カメラ軸87.7%。<strong style="color: var(--text)">両軸ともShortsが主戦場</strong>。</p>
-      </div>
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">視聴者属性（年齢×性別）</h3>
-        <div class="chart-wrap"><canvas id="ytDemo"></canvas></div>
-        <p class="text-xs mt-2" style="color: var(--muted)">VAL軸=男92.1%(VALORANT層) / カメラ軸=男56% / 女44%(バランス)。</p>
-      </div>
-    </div>
-    <div class="grid lg:grid-cols-2 gap-4">
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">VAL軸 Top10（再生×登録獲得）</h3>
-        <div class="chart-wrap tall"><canvas id="valTop"></canvas></div>
-      </div>
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">カメラ軸 Top10</h3>
-        <div class="chart-wrap tall"><canvas id="camTop"></canvas></div>
-      </div>
-    </div>
-    <div class="glass p-5">
-      <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">視聴維持率カーブ：両軸Top1の比較</h3>
-      <div class="chart-wrap"><canvas id="retention"></canvas></div>
-      <div class="text-sm mt-3 rounded-lg p-3" style="background: var(--surface-2)">
-        <strong style="color: var(--accent-2)">カメラ軸Top1</strong>「名前間違えないでください」は<strong style="color: var(--green)">25%地点までリピート発生</strong>（watch ratio &gt; 1.0）。
-        <strong style="color: var(--blue)">VAL軸Top1</strong>「癖強ネオン」は<strong style="color: var(--orange)">10%地点で離脱開始</strong>。
-        → カメラ軸の冒頭フックの方が引きが強い。VAL軸の冒頭3秒改善が次の伸びしろ。
-      </div>
-    </div>
-  </section>
-
-  <!-- X -->
-  <section id="x" class="space-y-4">
-    <div class="flex items-center gap-2">
-      <i data-lucide="twitter" class="w-5 h-5" style="color: var(--blue)"></i>
-      <h2 class="text-xl font-bold">X <span class="text-sm font-medium" style="color: var(--muted)">— 認知獲得装置（最強）</span></h2>
-    </div>
-    <div class="text-sm rounded-lg p-3" style="background: var(--surface-2); color: var(--muted)">
-      <strong style="color: var(--text)">X Premium 加入済（2026-05-02）</strong>。analytics.x.com から詳細指標取得。
-      YouTube両軸合計の累計再生 316K に対し <strong style="color: var(--green)">X VAL軸の月平均Imp 575K</strong> = <strong style="color: var(--green)">X が認知レイヤーで圧倒的</strong>。
-    </div>
-
-    <div class="grid lg:grid-cols-2 gap-4">
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">VAL軸 @numuru_zz（直近7日）</h3>
-        <div class="space-y-2 text-sm">
-          <div class="flex justify-between"><span>Impressions</span><span class="font-bold">52.8K <span class="text-xs ml-2" style="color: var(--green)">+86%</span></span></div>
-          <div class="flex justify-between"><span>Engagements</span><span class="font-bold">2.9K <span class="text-xs ml-2" style="color: var(--green)">+115%</span></span></div>
-          <div class="flex justify-between"><span>Engagement rate</span><span class="font-bold">5.5% <span class="text-xs ml-2" style="color: var(--green)">+15%</span></span></div>
-          <div class="flex justify-between"><span>Profile visits</span><span class="font-bold">433 <span class="text-xs ml-2" style="color: var(--green)">+65%</span></span></div>
-          <div class="flex justify-between"><span>Likes / Replies / Reposts</span><span>790 / 68 / 68</span></div>
-          <div class="flex justify-between"><span>Bookmarks</span><span>87 <span class="text-xs ml-2" style="color: var(--green)">+135%</span></span></div>
-        </div>
-      </div>
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">VAL軸 @numuru_zz（年間累計）</h3>
-        <div class="space-y-2 text-sm">
-          <div class="flex justify-between"><span>Total followers</span><span class="font-bold">2,088 <span class="text-xs" style="color: var(--muted)">(verified 239)</span></span></div>
-          <div class="flex justify-between"><span>年間 Impressions</span><span class="font-bold">6.9M</span></div>
-          <div class="flex justify-between"><span>年間 Engagements</span><span class="font-bold">244.9K</span></div>
-          <div class="flex justify-between"><span>年間 Engagement rate</span><span>3.5%</span></div>
-          <div class="flex justify-between"><span>年間 Profile visits</span><span>45.8K</span></div>
-          <div class="flex justify-between"><span>月平均 Imp</span><span class="font-bold">約 575K</span></div>
-          <div class="flex justify-between"><span>誕生日</span><span>2001-05-20 <span class="text-xs" style="color: var(--accent-2)">=Live2D日</span></span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid lg:grid-cols-2 gap-4">
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">月次Imp推移（年間）</h3>
-        <div class="chart-wrap"><canvas id="xMonthly"></canvas></div>
-      </div>
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">フォロワー年齢分布</h3>
-        <div class="chart-wrap"><canvas id="xAge"></canvas></div>
-      </div>
-    </div>
-
-    <div class="glass p-5">
-      <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">過去3ヶ月 バズTop10投稿</h3>
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm">
-          <thead style="color: var(--muted)">
-            <tr class="text-left">
-              <th class="py-2 pr-3">日付</th>
-              <th class="py-2 pr-3 text-right">Imp</th>
-              <th class="py-2 pr-3 text-right">Likes</th>
-              <th class="py-2 pr-3 text-right">RT</th>
-              <th class="py-2">内容</th>
-            </tr>
-          </thead>
-          <tbody id="xTopPosts"></tbody>
-        </table>
-      </div>
-      <p class="text-xs mt-3" style="color: var(--muted)">
-        Top10合計 <strong style="color: var(--text)">724K Imp</strong>、うち<strong style="color: var(--green)">VALORANT切り抜き系が607K（83.8%）</strong>。<strong>YouTubeの黄金フォーマット「野良異質遭遇型」がXでも最強</strong>。
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="reveal">
+      <span class="pill"><span class="dot"></span>Pre Live2D ベースライン v1.0</span>
+      <h1 class="md-display-l" style="margin: 16px 0 12px">
+        <span style="background: linear-gradient(135deg, var(--md-sys-color-primary), var(--md-sys-color-secondary)); -webkit-background-clip: text; background-clip: text; color: transparent;">永遠ねむる</span>
+        <br>アナリティクス
+      </h1>
+      <p class="md-body-l" style="color: var(--md-sys-color-on-surface-variant); max-width: 720px">
+        固定日 2026-05-02 ／ 5/20 Live2Dお披露目（=ねむるさん誕生日）以降の成長を測る分母
       </p>
     </div>
-
-    <div class="grid lg:grid-cols-3 gap-4">
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">男女比 / リーチ源</h3>
-        <div class="space-y-1 text-sm">
-          <div class="flex justify-between"><span>Male</span><span>69.2%</span></div>
-          <div class="flex justify-between"><span>Female</span><span>29.8%</span></div>
-          <div class="flex justify-between"><span>Not specified</span><span>1.0%</span></div>
-          <div class="border-t mt-2 pt-2" style="border-color: var(--border)">
-            <div class="flex justify-between"><span>From followers</span><span>86.2%</span></div>
-            <div class="flex justify-between"><span>Non-followers</span><span class="font-semibold" style="color: var(--green)">13.8%</span></div>
-          </div>
+    <!-- Countdown Card -->
+    <div class="grid grid-2 reveal" style="margin-top: 32px; gap: 12px">
+      <div class="card card-tonal" style="grid-column: span 1; padding: 28px;">
+        <div class="md-label-m" style="opacity: .8">5/20 Live2Dお披露目まで</div>
+        <div style="display: flex; align-items: baseline; gap: 12px; margin-top: 8px;">
+          <div class="md-display-l" id="countdown-big">--</div>
+          <div class="md-headline-s" style="opacity: .7">日</div>
+        </div>
+        <div class="md-body-s" style="margin-top: 12px; opacity: .75">
+          <span class="ms sm" style="vertical-align: -3px">cake</span>
+          ねむるさん誕生日 × 新モデルデビュー
         </div>
       </div>
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">地域 / デバイス</h3>
-        <div class="space-y-1 text-sm">
-          <div class="flex justify-between"><span>Japan</span><span>96.7%</span></div>
-          <div class="flex justify-between"><span>Taiwan</span><span>2.0%</span></div>
-          <div class="flex justify-between"><span>United States</span><span>0.9%</span></div>
-          <div class="border-t mt-2 pt-2" style="border-color: var(--border)">
-            <div class="flex justify-between"><span>iOS</span><span>59.6%</span></div>
-            <div class="flex justify-between"><span>Android</span><span>20.4%</span></div>
-            <div class="flex justify-between"><span>Web</span><span>20.0%</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">カメラ軸 @tow_nemuru</h3>
-        <div class="space-y-1 text-sm">
-          <div class="flex justify-between"><span>フォロワー</span><span class="font-bold">122</span></div>
-          <div class="flex justify-between"><span>投稿数</span><span>554</span></div>
-          <div class="flex justify-between"><span>開設</span><span>2026-02</span></div>
-          <div class="text-xs mt-2" style="color: var(--muted)">Camera × VTuber × Sing / FPS連携 @numuru_zz<br>X Premium未加入のため詳細analytics取得不可</div>
+      <div class="card elev">
+        <div class="md-label-m" style="color: var(--md-sys-color-on-surface-variant)">最終更新</div>
+        <div class="md-headline-s" id="lastUpdated" style="margin-top: 8px">--</div>
+        <div class="md-label-m" style="color: var(--md-sys-color-on-surface-variant); margin-top: 16px">表示時刻</div>
+        <div class="md-body-m" id="nowTime">--</div>
+        <div style="margin-top: 16px;">
+          <a href="reports/" class="md-body-s" style="color: var(--md-sys-color-primary); text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+            <span class="ms sm">arrow_forward</span> 週次レポート履歴を見る
+          </a>
         </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <div class="glass p-4 text-sm" style="background: linear-gradient(135deg, rgba(167,139,250,.08), rgba(96,165,250,.05))">
-      <strong style="color: var(--accent)">戦略示唆</strong>: アクティブピークは<strong>金土日 16-20時</strong>。お披露目当日（火曜21時）は前日（月曜夕方）と当日朝・直前にティザー連投で <strong style="color: var(--green)">Non-followers経由13.8%の新規リーチ</strong>を最大化。
-    </div>
-  </section>
+<main class="container" style="padding-top: 0">
 
-  <!-- GOLDEN FORMAT -->
-  <section id="format" class="space-y-4">
-    <div class="flex items-center gap-2">
-      <i data-lucide="flame" class="w-5 h-5" style="color: var(--orange)"></i>
-      <h2 class="text-xl font-bold">黄金フォーマット解析</h2>
-    </div>
-    <div class="text-sm rounded-lg p-3" style="background: var(--surface-2); color: var(--muted)">
-      whisper large-v3 で文字起こしした両軸Top3（計6本）から抽出した9パターンの台本テンプレ。冒頭3秒のフック構造×リピート発生フレーズを機械的に分析。
-    </div>
+<!-- KPI -->
+<section id="kpi" class="section">
+  <div class="section-head">
+    <div class="icon-circle"><span class="ms">analytics</span></div>
+    <h2 class="md-headline-m">KPIスナップショット</h2>
+  </div>
+  <div class="grid grid-kpi">
+    <div class="card kpi elev"><div class="label"><span class="ms sm">live_tv</span>Twitch Followers</div><div class="value">4,000</div><div class="meta">partner認証済</div></div>
+    <div class="card kpi elev"><div class="label"><span class="ms sm">play_circle</span>Twitch VOD累計</div><div class="value">313K</div><div class="meta">回</div></div>
+    <div class="card kpi elev"><div class="label"><span class="ms sm">subscriptions</span>YouTube 両軸</div><div class="value">1,050</div><div class="meta">VAL 280 / カメラ 770</div></div>
+    <div class="card kpi elev"><div class="label"><span class="ms sm">alternate_email</span>X VAL軸</div><div class="value">2,088</div><div class="meta">年Imp 6.9M</div></div>
+    <div class="card kpi elev"><div class="label"><span class="ms sm">visibility</span>X 月平均 Imp</div><div class="value">575K</div><div class="meta delta-up">YT累計を毎月生成</div></div>
+    <div class="card kpi elev"><div class="label"><span class="ms sm">favorite</span>X 直近7日 ER</div><div class="value">5.5%</div><div class="meta delta-up">前週比 +15%</div></div>
+    <div class="card kpi elev"><div class="label"><span class="ms sm">schedule</span>配信ペース</div><div class="value">6.6<span style="font-size: 14px; margin-left: 4px;">日/週</span></div><div class="meta">5h/日</div></div>
+    <div class="card kpi elev"><div class="label"><span class="ms sm">emoji_events</span>クラファン達成率</div><div class="value" style="color: var(--md-sys-color-tertiary)">125%</div><div class="meta">目標50万→62.5万</div></div>
+  </div>
+</section>
 
-    <div class="glass p-5">
-      <h3 class="text-sm font-semibold mb-3" style="color: var(--accent)">共通DNA</h3>
-      <ul class="space-y-2 text-sm">
-        <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 mt-0.5" style="color: var(--green)"></i>冒頭3秒で「異質・疑問・ツッコミ」のフック（即座に「何か」が起きる）</li>
-        <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 mt-0.5" style="color: var(--green)"></i>関西イントネーションのテンポツッコミ</li>
-        <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 mt-0.5" style="color: var(--green)"></i>30秒以内に1つ以上のオチ</li>
-        <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 mt-0.5" style="color: var(--green)"></i>説明・前置きはゼロ</li>
-        <li class="flex items-start gap-2"><i data-lucide="zap" class="w-4 h-4 mt-0.5" style="color: var(--orange)"></i><strong>X / YouTube / Twitch すべてで同じ「野良異質遭遇型」が最強</strong> → クロスプラットフォーム展開で効率最大化</li>
-      </ul>
+<!-- Outliers -->
+<section class="section">
+  <div class="banner reveal">
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+      <span class="ms" style="color: var(--md-sys-color-tertiary)">warning</span>
+      <h3 class="md-title-m" style="color: var(--md-sys-color-tertiary); margin: 0">異常値（メイングラフから分離）</h3>
     </div>
+    <p class="md-body-m" style="margin: 0 0 16px; color: var(--md-sys-color-on-surface-variant)">
+      メイングラフは通常運用ベースを見るため、Twitchトップページ掲載などの単発施策値を以下に切り出しています。トップページ掲載の再生数は「アクセスされるだけでカウント」の仕様で、実視聴者数ではなくインプレッションに近い値。
+    </p>
+    <div class="grid" style="grid-template-columns: repeat(2, 1fr); gap: 8px;">
+      <div style="background: rgba(255,255,255,.6); padding: 14px; border-radius: var(--md-shape-md);">
+        <div class="md-headline-s" style="color: var(--md-sys-color-tertiary)">153,994</div>
+        <div class="md-body-s" style="color: var(--md-sys-color-on-surface-variant)">VOD「ランク上げ」(2026-03-25) ★トップ掲載</div>
+      </div>
+      <div style="background: rgba(255,255,255,.6); padding: 14px; border-radius: var(--md-shape-md);">
+        <div class="md-headline-s" style="color: var(--md-sys-color-tertiary)">2,129</div>
+        <div class="md-body-s" style="color: var(--md-sys-color-on-surface-variant)">月次ピーク同接 (2026-02)</div>
+      </div>
+      <div style="background: rgba(255,255,255,.6); padding: 14px; border-radius: var(--md-shape-md);">
+        <div class="md-headline-s" style="color: var(--md-sys-color-tertiary)">1,995</div>
+        <div class="md-body-s" style="color: var(--md-sys-color-on-surface-variant)">月次ピーク同接 (2025-12)</div>
+      </div>
+      <div style="background: rgba(255,255,255,.6); padding: 14px; border-radius: var(--md-shape-md);">
+        <div class="md-headline-s" style="color: var(--md-sys-color-tertiary)">1,727</div>
+        <div class="md-body-s" style="color: var(--md-sys-color-on-surface-variant)">月次ピーク同接 (2026-03)</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <div class="grid md:grid-cols-2 gap-3">
-      <details class="glass p-4 cursor-pointer">
-        <summary class="font-semibold text-sm">📝 カメラ軸テンプレA：誤認否定型 (Top1基準)</summary>
-        <pre class="mt-3 text-xs p-3 rounded-lg whitespace-pre-wrap" style="background: var(--bg)">[0-3s]   「○○って言われたんだけど、違うよ」
+<!-- Twitch -->
+<section id="twitch" class="section">
+  <div class="section-head">
+    <div class="icon-circle" style="background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container)"><span class="ms">live_tv</span></div>
+    <h2 class="md-headline-m">Twitch <span style="color: var(--md-sys-color-on-surface-variant); font-weight: 500; font-size: 14px;">— メイン主戦場</span></h2>
+  </div>
+  <div class="note" style="margin-bottom: 16px">
+    <strong>partner認証済</strong>（2024-12開設→2025-09頃取得・約9ヶ月）／配信ペース 6.6日/週・5h/日／獲得効率 1.7人/h
+  </div>
+  <div class="grid grid-2">
+    <div class="card elev"><div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 12px">累計フォロワー数推移</div><div class="chart-wrap"><canvas id="cumFollowers"></canvas></div></div>
+    <div class="card elev"><div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 12px">月次フォロワー獲得</div><div class="chart-wrap"><canvas id="followerGain"></canvas></div></div>
+  </div>
+  <div class="grid grid-2" style="margin-top: 12px;">
+    <div class="card elev"><div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 12px">月次ピーク同接（異常値除外）</div><div class="chart-wrap"><canvas id="peakNormal"></canvas></div><p class="md-body-s" style="margin-top: 8px; color: var(--md-sys-color-on-surface-variant)">トップ掲載月（オレンジ）はY=300にクリップ。通常運用は120〜220のレンジ。</p></div>
+    <div class="card elev"><div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 12px">曜日別 平均同接 (UTC)</div><div class="chart-wrap"><canvas id="weekday"></canvas></div><p class="md-body-s" style="margin-top: 8px; color: var(--md-sys-color-on-surface-variant)">木曜が最強(85)。<strong style="color: var(--md-sys-color-success)">5/22木曜にお披露目フォロー配信</strong>を入れると曜日効果＋お披露目余韻でブースト可。</p></div>
+  </div>
+  <div class="card elev" style="margin-top: 12px;">
+    <div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 12px">VOD Top10 (★トップ掲載動画は別枠)</div>
+    <div class="chart-wrap tall"><canvas id="vodTop"></canvas></div>
+  </div>
+</section>
+
+<!-- YouTube -->
+<section id="youtube" class="section">
+  <div class="section-head">
+    <div class="icon-circle" style="background: #fde7e9; color: #b3261e"><span class="ms">play_circle</span></div>
+    <h2 class="md-headline-m">YouTube <span style="color: var(--md-sys-color-on-surface-variant); font-weight: 500; font-size: 14px;">— ファン化層</span></h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card elev"><div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 12px">流入元の比較 (%)</div><div class="chart-wrap"><canvas id="ytTraffic"></canvas></div><p class="md-body-s" style="margin-top: 8px; color: var(--md-sys-color-on-surface-variant)">VAL軸 Shorts95.5% / カメラ軸87.7%。<strong>両軸ともShortsが主戦場</strong>。</p></div>
+    <div class="card elev"><div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 12px">視聴者属性（年齢×性別）</div><div class="chart-wrap"><canvas id="ytDemo"></canvas></div><p class="md-body-s" style="margin-top: 8px; color: var(--md-sys-color-on-surface-variant)">VAL軸=男92.1%(VALORANT層) / カメラ軸=男56% / 女44%(バランス)。</p></div>
+  </div>
+  <div class="grid grid-2" style="margin-top: 12px;">
+    <div class="card elev"><div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 12px">VAL軸 Top10（再生×登録獲得）</div><div class="chart-wrap tall"><canvas id="valTop"></canvas></div></div>
+    <div class="card elev"><div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 12px">カメラ軸 Top10</div><div class="chart-wrap tall"><canvas id="camTop"></canvas></div></div>
+  </div>
+  <div class="card elev" style="margin-top: 12px;">
+    <div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 12px">視聴維持率カーブ：両軸Top1の比較</div>
+    <div class="chart-wrap"><canvas id="retention"></canvas></div>
+    <div class="note" style="margin-top: 12px">
+      <strong style="color: var(--md-sys-color-secondary)">カメラ軸Top1</strong>「名前間違えないでください」は<strong style="color: var(--md-sys-color-success)">25%地点までリピート発生</strong>（watch ratio &gt; 1.0）。
+      <strong style="color: var(--md-sys-color-primary)">VAL軸Top1</strong>「癖強ネオン」は<strong style="color: var(--md-sys-color-warning)">10%地点で離脱開始</strong>。
+      → カメラ軸の冒頭フックの方が引きが強い。VAL軸の冒頭3秒改善が次の伸びしろ。
+    </div>
+  </div>
+</section>
+
+<!-- X -->
+<section id="x" class="section">
+  <div class="section-head">
+    <div class="icon-circle" style="background: #d8e6f7; color: #1565c0"><span class="ms">alternate_email</span></div>
+    <h2 class="md-headline-m">X <span style="color: var(--md-sys-color-on-surface-variant); font-weight: 500; font-size: 14px;">— 認知獲得装置（最強）</span></h2>
+  </div>
+  <div class="note" style="margin-bottom: 16px">
+    <strong>X Premium 加入済</strong>。analytics.x.com から詳細指標取得。
+    YouTube両軸合計の累計再生 316K に対し <strong>X VAL軸の月平均Imp 575K</strong> = <strong>X が認知レイヤーで圧倒的</strong>。
+  </div>
+  <div class="grid grid-2">
+    <div class="card elev">
+      <div class="md-title-m" style="margin-bottom: 12px;">VAL軸 @numuru_zz <span class="md-body-s" style="color: var(--md-sys-color-on-surface-variant)">（直近7日）</span></div>
+      <div style="display: grid; gap: 10px; font-size: 14px;">
+        <div style="display: flex; justify-content: space-between"><span>Impressions</span><span><strong>52.8K</strong> <span class="kpi delta-up" style="font-size: 12px">+86%</span></span></div>
+        <div style="display: flex; justify-content: space-between"><span>Engagements</span><span><strong>2.9K</strong> <span class="kpi delta-up" style="font-size: 12px">+115%</span></span></div>
+        <div style="display: flex; justify-content: space-between"><span>Engagement rate</span><span><strong>5.5%</strong> <span class="kpi delta-up" style="font-size: 12px">+15%</span></span></div>
+        <div style="display: flex; justify-content: space-between"><span>Profile visits</span><span>433 <span class="kpi delta-up" style="font-size: 12px">+65%</span></span></div>
+        <div style="display: flex; justify-content: space-between"><span>Likes / Replies / Reposts</span><span>790 / 68 / 68</span></div>
+        <div style="display: flex; justify-content: space-between"><span>Bookmarks</span><span>87 <span class="kpi delta-up" style="font-size: 12px">+135%</span></span></div>
+      </div>
+    </div>
+    <div class="card elev">
+      <div class="md-title-m" style="margin-bottom: 12px;">VAL軸 @numuru_zz <span class="md-body-s" style="color: var(--md-sys-color-on-surface-variant)">（年間累計）</span></div>
+      <div style="display: grid; gap: 10px; font-size: 14px;">
+        <div style="display: flex; justify-content: space-between"><span>Total followers</span><span><strong>2,088</strong> <span style="color: var(--md-sys-color-on-surface-variant); font-size: 12px;">(verified 239)</span></span></div>
+        <div style="display: flex; justify-content: space-between"><span>年間 Impressions</span><span><strong>6.9M</strong></span></div>
+        <div style="display: flex; justify-content: space-between"><span>年間 Engagements</span><span><strong>244.9K</strong></span></div>
+        <div style="display: flex; justify-content: space-between"><span>年間 Engagement rate</span><span>3.5%</span></div>
+        <div style="display: flex; justify-content: space-between"><span>年間 Profile visits</span><span>45.8K</span></div>
+        <div style="display: flex; justify-content: space-between"><span>月平均 Imp</span><span><strong>約 575K</strong></span></div>
+        <div style="display: flex; justify-content: space-between"><span>誕生日</span><span>2001-05-20 <span style="color: var(--md-sys-color-secondary); font-size: 12px;">=Live2D日</span></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-2" style="margin-top: 12px">
+    <div class="card elev"><div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 12px">月次Imp推移（年間）</div><div class="chart-wrap"><canvas id="xMonthly"></canvas></div></div>
+    <div class="card elev"><div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 12px">フォロワー年齢分布</div><div class="chart-wrap"><canvas id="xAge"></canvas></div></div>
+  </div>
+  <div class="card elev" style="margin-top: 12px">
+    <div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 12px">過去3ヶ月 バズTop10投稿</div>
+    <div style="overflow-x: auto;">
+      <table>
+        <thead><tr><th>日付</th><th class="num">Imp</th><th class="num">Likes</th><th class="num">RT</th><th>内容</th></tr></thead>
+        <tbody id="xTopPosts"></tbody>
+      </table>
+    </div>
+    <p class="md-body-s" style="margin-top: 12px; color: var(--md-sys-color-on-surface-variant)">
+      Top10合計 <strong>724K Imp</strong>、うち<strong style="color: var(--md-sys-color-success)">VALORANT切り抜き系が607K（83.8%）</strong>。<strong>YouTubeの黄金フォーマット「野良異質遭遇型」がXでも最強</strong>。
+    </p>
+  </div>
+  <div class="grid grid-3" style="margin-top: 12px">
+    <div class="card elev"><div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 8px">男女比 / リーチ源</div><div style="display: grid; gap: 6px; font-size: 14px;"><div style="display: flex; justify-content: space-between"><span>Male</span><span>69.2%</span></div><div style="display: flex; justify-content: space-between"><span>Female</span><span>29.8%</span></div><div style="display: flex; justify-content: space-between"><span>Not specified</span><span>1.0%</span></div><div style="border-top: 1px solid var(--md-sys-color-outline-variant); padding-top: 6px; margin-top: 4px"><div style="display: flex; justify-content: space-between"><span>From followers</span><span>86.2%</span></div><div style="display: flex; justify-content: space-between"><span>Non-followers</span><span style="color: var(--md-sys-color-success); font-weight: 600">13.8%</span></div></div></div></div>
+    <div class="card elev"><div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 8px">地域 / デバイス</div><div style="display: grid; gap: 6px; font-size: 14px;"><div style="display: flex; justify-content: space-between"><span>Japan</span><span>96.7%</span></div><div style="display: flex; justify-content: space-between"><span>Taiwan</span><span>2.0%</span></div><div style="display: flex; justify-content: space-between"><span>United States</span><span>0.9%</span></div><div style="border-top: 1px solid var(--md-sys-color-outline-variant); padding-top: 6px; margin-top: 4px"><div style="display: flex; justify-content: space-between"><span>iOS</span><span>59.6%</span></div><div style="display: flex; justify-content: space-between"><span>Android</span><span>20.4%</span></div><div style="display: flex; justify-content: space-between"><span>Web</span><span>20.0%</span></div></div></div></div>
+    <div class="card elev"><div class="md-title-s" style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 8px">カメラ軸 @tow_nemuru</div><div style="display: grid; gap: 6px; font-size: 14px;"><div style="display: flex; justify-content: space-between"><span>フォロワー</span><span><strong>122</strong></span></div><div style="display: flex; justify-content: space-between"><span>投稿数</span><span>554</span></div><div style="display: flex; justify-content: space-between"><span>開設</span><span>2026-02</span></div><div style="font-size: 12px; color: var(--md-sys-color-on-surface-variant); margin-top: 8px">Camera × VTuber × Sing / FPS連携 @numuru_zz<br>X Premium未加入のため詳細不可</div></div></div>
+  </div>
+  <div class="card card-tonal" style="margin-top: 12px;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span class="ms">lightbulb</span>
+      <strong>戦略示唆</strong>
+    </div>
+    <p style="margin: 8px 0 0; font-size: 14px;">
+      アクティブピークは<strong>金土日 16-20時</strong>。お披露目当日（火曜21時）は前日（月曜夕方）と当日朝・直前にティザー連投で <strong>Non-followers経由13.8%の新規リーチ</strong>を最大化。
+    </p>
+  </div>
+</section>
+
+<!-- Format -->
+<section id="format" class="section">
+  <div class="section-head">
+    <div class="icon-circle" style="background: #fef0c4; color: #ea580c"><span class="ms">local_fire_department</span></div>
+    <h2 class="md-headline-m">黄金フォーマット解析</h2>
+  </div>
+  <div class="note" style="margin-bottom: 16px">
+    whisper large-v3 で文字起こしした両軸Top3（計6本）から抽出した9パターンの台本テンプレ。冒頭3秒のフック構造×リピート発生フレーズを機械的に分析。
+  </div>
+  <div class="card elev" style="margin-bottom: 16px;">
+    <div class="md-title-m" style="margin-bottom: 12px; color: var(--md-sys-color-primary)">共通DNA</div>
+    <div style="display: grid; gap: 8px;">
+      <div style="display: flex; gap: 8px; align-items: flex-start"><span class="ms sm" style="color: var(--md-sys-color-success); margin-top: 2px">check_circle</span><span class="md-body-m">冒頭3秒で「異質・疑問・ツッコミ」のフック（即座に「何か」が起きる）</span></div>
+      <div style="display: flex; gap: 8px; align-items: flex-start"><span class="ms sm" style="color: var(--md-sys-color-success); margin-top: 2px">check_circle</span><span class="md-body-m">関西イントネーションのテンポツッコミ</span></div>
+      <div style="display: flex; gap: 8px; align-items: flex-start"><span class="ms sm" style="color: var(--md-sys-color-success); margin-top: 2px">check_circle</span><span class="md-body-m">30秒以内に1つ以上のオチ</span></div>
+      <div style="display: flex; gap: 8px; align-items: flex-start"><span class="ms sm" style="color: var(--md-sys-color-success); margin-top: 2px">check_circle</span><span class="md-body-m">説明・前置きはゼロ</span></div>
+      <div style="display: flex; gap: 8px; align-items: flex-start"><span class="ms sm" style="color: var(--md-sys-color-tertiary); margin-top: 2px">bolt</span><span class="md-body-m"><strong>X / YouTube / Twitch すべてで同じ「野良異質遭遇型」が最強</strong> → クロスプラットフォーム展開で効率最大化</span></div>
+    </div>
+  </div>
+  <div class="grid grid-2">
+    <details><summary>📝 カメラ軸テンプレA：誤認否定型 (Top1基準)</summary><pre>[0-3s]   「○○って言われたんだけど、違うよ」
 [3-10s]  本当はこうなんだ、という真相説明
 [10-25s] 由来や背景の意外な話
-[25-30s] 「コメントで○○教えて！」呼びかけ</pre>
-      </details>
-      <details class="glass p-4 cursor-pointer">
-        <summary class="font-semibold text-sm">📝 カメラ軸テンプレB：自虐ファクト羅列型 (Top2)</summary>
-        <pre class="mt-3 text-xs p-3 rounded-lg whitespace-pre-wrap" style="background: var(--bg)">[0-3s]   「とわねむるは○○な過去がある」
+[25-30s] 「コメントで○○教えて！」呼びかけ</pre></details>
+    <details><summary>📝 カメラ軸テンプレB：自虐ファクト羅列型 (Top2)</summary><pre>[0-3s]   「とわねむるは○○な過去がある」
 [3-15s]  意外な事実3つ羅列
 [15-25s] それを今に繋げる
-[25-30s] 親しみを込めた締め</pre>
-      </details>
-      <details class="glass p-4 cursor-pointer">
-        <summary class="font-semibold text-sm">📝 カメラ軸テンプレC：誤解→慌て訂正型 (Top3)</summary>
-        <pre class="mt-3 text-xs p-3 rounded-lg whitespace-pre-wrap" style="background: var(--bg)">[0-3s]   誤解を招く言葉
+[25-30s] 親しみを込めた締め</pre></details>
+    <details><summary>📝 カメラ軸テンプレC：誤解→慌て訂正型 (Top3)</summary><pre>[0-3s]   誤解を招く言葉
 [3-8s]   慌てて訂正（テンション高め）
 [8-20s]  真相と経緯
-[20-30s] 視聴者への宣言</pre>
-      </details>
-      <details class="glass p-4 cursor-pointer">
-        <summary class="font-semibold text-sm">📝 VAL軸テンプレV-A：野良異質遭遇型 (最強パターン)</summary>
-        <pre class="mt-3 text-xs p-3 rounded-lg whitespace-pre-wrap" style="background: var(--bg)">[0-3s]   野良の異質な行動
+[20-30s] 視聴者への宣言</pre></details>
+    <details><summary>📝 VAL軸テンプレV-A：野良異質遭遇型 (最強パターン)</summary><pre>[0-3s]   野良の異質な行動
 [3-10s]  即座の関西ツッコミ
 [10-30s] 応酬・漫才・困惑のループ
 [30-60s] オチ（疲れる/諦める）
-[60s]    「次の野良」期待感で締め</pre>
-      </details>
-    </div>
-  </section>
+[60s]    「次の野良」期待感で締め</pre></details>
+  </div>
+</section>
 
-  <!-- 5/20 PLAN -->
-  <section id="plan" class="space-y-4">
-    <div class="flex items-center gap-2">
-      <i data-lucide="cake" class="w-5 h-5" style="color: var(--accent-2)"></i>
-      <h2 class="text-xl font-bold">5/20 Live2D × 誕生日プラン</h2>
-    </div>
-
-    <div class="grid lg:grid-cols-2 gap-4">
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">逆算スケジュール</h3>
-        <div class="space-y-3">
-          <div class="flex items-start gap-3 p-2 rounded-lg" style="background: var(--surface-2)">
-            <span class="px-2 py-1 text-xs rounded" style="background: var(--green); color: white">A</span>
-            <div class="text-sm flex-1">
-              <div class="font-semibold">5/2 - 5/5 ベースライン固定</div>
-              <div class="text-xs mt-0.5" style="color: var(--green)">完了</div>
-            </div>
-          </div>
-          <div class="flex items-start gap-3 p-2 rounded-lg" style="background: var(--surface-2)">
-            <span class="px-2 py-1 text-xs rounded" style="background: var(--green); color: white">B</span>
-            <div class="text-sm flex-1">
-              <div class="font-semibold">5/3 - 5/12 黄金フォーマット解明</div>
-              <div class="text-xs mt-0.5" style="color: var(--green)">v1完了</div>
-            </div>
-          </div>
-          <div class="flex items-start gap-3 p-2 rounded-lg" style="background: var(--surface-2)">
-            <span class="px-2 py-1 text-xs rounded" style="background: var(--orange); color: white">C</span>
-            <div class="text-sm flex-1">
-              <div class="font-semibold">5/8 - 5/15 お披露目企画 + Twitchトップ申請</div>
-            </div>
-          </div>
-          <div class="flex items-start gap-3 p-2 rounded-lg" style="background: var(--surface-2)">
-            <span class="px-2 py-1 text-xs rounded" style="background: var(--blue); color: white">D</span>
-            <div class="text-sm flex-1">
-              <div class="font-semibold">5/16 - 5/19 プレローンチ告知</div>
-            </div>
-          </div>
-          <div class="flex items-start gap-3 p-2 rounded-lg" style="background: linear-gradient(90deg, rgba(244,114,182,.15), rgba(167,139,250,.15))">
-            <span class="px-2 py-1 text-xs rounded" style="background: var(--accent-2); color: white">E</span>
-            <div class="text-sm flex-1">
-              <div class="font-bold">🎂 5/20 当日（誕生日 × Live2Dお披露目）</div>
-            </div>
-          </div>
-          <div class="flex items-start gap-3 p-2 rounded-lg" style="background: var(--surface-2)">
-            <span class="px-2 py-1 text-xs rounded" style="background: var(--accent); color: white">F</span>
-            <div class="text-sm flex-1">
-              <div class="font-semibold">5/21 - 5/27 ポストローンチ・切り抜き量産</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="glass p-5">
-        <h3 class="text-sm font-semibold mb-3" style="color: var(--muted)">Post Live2D KPI目標 (5/27時点)</h3>
-        <div class="space-y-2.5 text-sm">
-          <div>
-            <div class="flex justify-between mb-1"><span>Twitch Followers</span><span style="color: var(--muted)">4,000 → 4.5K〜6K</span></div>
-            <div class="h-2 rounded-full" style="background: var(--surface-2)"><div class="h-full rounded-full" style="background: linear-gradient(90deg, var(--blue), var(--accent)); width: 80%"></div></div>
-          </div>
-          <div>
-            <div class="flex justify-between mb-1"><span>5月フォロワー獲得</span><span style="color: var(--muted)">+4 → +400〜+1,000</span></div>
-            <div class="h-2 rounded-full" style="background: var(--surface-2)"><div class="h-full rounded-full" style="background: linear-gradient(90deg, var(--blue), var(--accent)); width: 60%"></div></div>
-          </div>
-          <div>
-            <div class="flex justify-between mb-1"><span>お披露目VOD再生</span><span style="color: var(--muted)">→ 30K〜80K</span></div>
-            <div class="h-2 rounded-full" style="background: var(--surface-2)"><div class="h-full rounded-full" style="background: linear-gradient(90deg, var(--blue), var(--accent)); width: 70%"></div></div>
-          </div>
-          <div>
-            <div class="flex justify-between mb-1"><span>お披露目ピーク同接</span><span style="color: var(--muted)">→ 1,000〜2,500</span></div>
-            <div class="h-2 rounded-full" style="background: var(--surface-2)"><div class="h-full rounded-full" style="background: linear-gradient(90deg, var(--blue), var(--accent)); width: 85%"></div></div>
-          </div>
-          <div>
-            <div class="flex justify-between mb-1"><span>カメラ軸登録</span><span style="color: var(--muted)">770 → 970〜1,270</span></div>
-            <div class="h-2 rounded-full" style="background: var(--surface-2)"><div class="h-full rounded-full" style="background: linear-gradient(90deg, var(--accent-2), var(--accent)); width: 65%"></div></div>
-          </div>
-        </div>
+<!-- Plan -->
+<section id="plan" class="section">
+  <div class="section-head">
+    <div class="icon-circle" style="background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container)"><span class="ms">cake</span></div>
+    <h2 class="md-headline-m">5/20 Live2D × 誕生日プラン</h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="card elev">
+      <div class="md-title-m" style="margin-bottom: 12px;">逆算スケジュール</div>
+      <div>
+        <div class="timeline-item"><div class="timeline-badge badge-done">A</div><div><div class="md-body-l" style="font-weight: 600">5/2 - 5/5 ベースライン固定</div><div class="md-body-s" style="color: var(--md-sys-color-success)">完了</div></div></div>
+        <div class="timeline-item"><div class="timeline-badge badge-done">B</div><div><div class="md-body-l" style="font-weight: 600">5/3 - 5/12 黄金フォーマット解明</div><div class="md-body-s" style="color: var(--md-sys-color-success)">v1完了</div></div></div>
+        <div class="timeline-item"><div class="timeline-badge badge-now">C</div><div><div class="md-body-l" style="font-weight: 600">5/8 - 5/15 お披露目企画 + Twitchトップ申請</div></div></div>
+        <div class="timeline-item"><div class="timeline-badge badge-todo">D</div><div><div class="md-body-l" style="font-weight: 600">5/16 - 5/19 プレローンチ告知</div></div></div>
+        <div class="timeline-item" style="background: linear-gradient(90deg, color-mix(in oklab, var(--md-sys-color-secondary) 12%, transparent), color-mix(in oklab, var(--md-sys-color-primary) 12%, transparent)); border-radius: var(--md-shape-md);"><div class="timeline-badge badge-event">🎂</div><div><div class="md-body-l" style="font-weight: 700">5/20 当日（誕生日 × Live2Dお披露目）</div></div></div>
+        <div class="timeline-item"><div class="timeline-badge badge-todo">F</div><div><div class="md-body-l" style="font-weight: 600">5/21 - 5/27 ポストローンチ・切り抜き量産</div></div></div>
       </div>
     </div>
-  </section>
+    <div class="card elev">
+      <div class="md-title-m" style="margin-bottom: 16px;">Post Live2D KPI目標 (5/27時点)</div>
+      <div style="display: grid; gap: 14px;">
+        <div><div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span class="md-body-m">Twitch Followers</span><span class="md-body-s" style="color: var(--md-sys-color-on-surface-variant)">4,000 → 4.5K〜6K</span></div><div class="progress-track"><div class="progress-bar" style="width: 80%"></div></div></div>
+        <div><div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span class="md-body-m">5月フォロワー獲得</span><span class="md-body-s" style="color: var(--md-sys-color-on-surface-variant)">+4 → +400〜+1,000</span></div><div class="progress-track"><div class="progress-bar" style="width: 60%"></div></div></div>
+        <div><div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span class="md-body-m">お披露目VOD再生</span><span class="md-body-s" style="color: var(--md-sys-color-on-surface-variant)">→ 30K〜80K</span></div><div class="progress-track"><div class="progress-bar" style="width: 70%"></div></div></div>
+        <div><div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span class="md-body-m">お披露目ピーク同接</span><span class="md-body-s" style="color: var(--md-sys-color-on-surface-variant)">→ 1,000〜2,500</span></div><div class="progress-track"><div class="progress-bar" style="width: 85%"></div></div></div>
+        <div><div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span class="md-body-m">カメラ軸登録</span><span class="md-body-s" style="color: var(--md-sys-color-on-surface-variant)">770 → 970〜1,270</span></div><div class="progress-track"><div class="progress-bar" style="width: 65%"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 </main>
 
-<footer class="border-t mt-10 py-8 text-center text-xs" style="border-color: var(--border); color: var(--muted)">
-  <p>毎週月曜9時に Discord に週次レポート自動配信／ Spreadsheetで開く: pre_live2d_baseline_v1.xlsx を Google Drive にアップ→右クリック→Googleスプレッドシートで開く</p>
-  <p class="mt-2">永遠ねむるサポート × Cowork Claude / 次回更新予定: 2026-05-27 (Post Live2D v2.0)</p>
+<footer class="footer">
+  <div class="container">
+    <p>毎週月曜9時に Discord に週次レポート自動配信／<a href="reports/">週次レポート履歴</a></p>
+    <p style="margin-top: 8px">永遠ねむるサポート × Cowork Claude / Material Design 3 / 次回更新: 2026-05-27 (Post Live2D v2.0)</p>
+  </div>
 </footer>
 
 <script>
-  // Lucide icons
-  if (window.lucide && window.lucide.createIcons) lucide.createIcons();
-
-  // Theme toggle
+  // Theme
   (function(){
-    const k = 'nemuru-theme';
+    const k = 'nm-theme';
     const root = document.documentElement;
     const saved = localStorage.getItem(k);
-    if (saved === 'light') root.setAttribute('data-theme', 'light');
+    if (saved) root.setAttribute('data-theme', saved);
+    else if (matchMedia('(prefers-color-scheme: dark)').matches) root.setAttribute('data-theme', 'dark');
     document.getElementById('themeToggle').addEventListener('click', () => {
-      const cur = root.getAttribute('data-theme');
-      if (cur === 'light') {
-        root.removeAttribute('data-theme');
-        localStorage.setItem(k, 'dark');
-      } else {
-        root.setAttribute('data-theme', 'light');
-        localStorage.setItem(k, 'light');
-      }
+      const cur = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', cur);
+      localStorage.setItem(k, cur);
     });
   })();
-
   // Countdown
   (function(){
     const target = new Date('2026-05-20T21:00:00+09:00');
@@ -629,220 +665,92 @@
       const days = Math.max(0, Math.floor((target - new Date()) / 86400000));
       document.getElementById('countdown-big').textContent = days;
     };
-    update();
-    setInterval(update, 60000);
+    update(); setInterval(update, 60000);
   })();
-
-  // Last updated / now
+  // Timestamp
   (function(){
     const fmt = d => d.toLocaleString('ja-JP', {timeZone: 'Asia/Tokyo'});
     document.getElementById('lastUpdated').textContent = fmt(new Date(document.lastModified));
-    const upd = () => document.getElementById('nowTime').textContent = fmt(new Date());
-    upd();
-    setInterval(upd, 1000);
+    const u = () => document.getElementById('nowTime').textContent = fmt(new Date());
+    u(); setInterval(u, 1000);
   })();
-
-  // Smooth scroll active nav
-  const navLinks = document.querySelectorAll('.nav-link');
-  const sections = ['kpi','twitch','youtube','x','format','plan'].map(id => document.getElementById(id));
+  // Reveal animation
+  (function(){
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  })();
+  // Active nav
+  const links = document.querySelectorAll('.nav-tab');
+  const ids = ['kpi','twitch','youtube','x','format','plan'];
+  const sects = ids.map(id => document.getElementById(id));
   const onScroll = () => {
-    let current = 'kpi';
-    for (const s of sections) {
-      if (s && s.getBoundingClientRect().top < 200) current = s.id;
-    }
-    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+    let cur = ids[0];
+    for (const s of sects) if (s && s.getBoundingClientRect().top < 200) cur = s.id;
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
   };
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // Charts: defaults
+  // Charts
   const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-  const updateChartColors = () => {
-    Chart.defaults.color = cssVar('--text');
-    Chart.defaults.borderColor = cssVar('--border');
-  };
-  Chart.defaults.font.family = "'Inter', 'Hiragino Sans', sans-serif";
+  Chart.defaults.font.family = "'Inter', 'Noto Sans JP', sans-serif";
   Chart.defaults.font.size = 11;
-  Chart.defaults.plugins.legend.labels.boxWidth = 12;
-  updateChartColors();
-
-  const C = {
-    accent: '#a78bfa',
-    accent2: '#f472b6',
-    blue: '#60a5fa',
-    green: '#34d399',
-    orange: '#fb923c',
-    red: '#fb7185',
-    gray: '#6b7280',
+  const refreshChartColors = () => {
+    Chart.defaults.color = cssVar('--md-sys-color-on-surface');
+    Chart.defaults.borderColor = cssVar('--md-sys-color-outline-variant');
   };
+  refreshChartColors();
+  const C = { primary: '#6750a4', secondary: '#db2777', tertiary: '#f59e0b', blue: '#1976d2', green: '#2e7d32', orange: '#ea580c', gray: '#79747e' };
 
-  const monthlyLabels = ['25-06','25-07','25-08','25-09','25-10','25-11','25-12','26-01','26-02','26-03','26-04','26-05'];
-  const followerGain = [113,260,165,406,470,276,404,224,95,87,82,4];
-  const totalFollowers = [1500,1760,1925,2331,2801,3077,3481,3705,3800,3887,3969,3973];
-  const peakNormal = [73,104,116,150,220,158,null,null,null,null,116,74];
-  const peakOutlier = [null,null,null,null,null,null,1995,1045,2129,1727,null,null];
+  const ml = ['25-06','25-07','25-08','25-09','25-10','25-11','25-12','26-01','26-02','26-03','26-04','26-05'];
+  const fg = [113,260,165,406,470,276,404,224,95,87,82,4];
+  const tf = [1500,1760,1925,2331,2801,3077,3481,3705,3800,3887,3969,3973];
+  const pn = [73,104,116,150,220,158,null,null,null,null,116,74];
+  const po = [null,null,null,null,null,null,1995,1045,2129,1727,null,null];
 
-  new Chart(document.getElementById('cumFollowers'), {
-    type: 'line',
-    data: { labels: monthlyLabels, datasets: [{
-      label: '累計フォロワー',
-      data: totalFollowers,
-      borderColor: C.accent, backgroundColor: C.accent + '30',
-      fill: true, tension: 0.3, pointRadius: 3, pointHoverRadius: 6
-    }]},
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }}}
-  });
+  new Chart(document.getElementById('cumFollowers'), { type:'line', data: { labels: ml, datasets:[{ label:'累計フォロワー', data:tf, borderColor:C.primary, backgroundColor:C.primary+'30', fill:true, tension:.35, pointRadius:3, pointHoverRadius:6, borderWidth:2 }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false }}}});
+  new Chart(document.getElementById('followerGain'), { type:'bar', data: { labels: ml, datasets:[{ label:'フォロワー獲得', data:fg, backgroundColor: ml.map((_,i)=> i===4?C.green:C.secondary), borderRadius:6 }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ afterLabel: ctx => ctx.dataIndex===4?'★最大月（2025-10）':'' }}}}});
+  new Chart(document.getElementById('peakNormal'), { type:'bar', data: { labels: ml, datasets:[{ label:'通常運用', data:pn, backgroundColor:C.blue, borderRadius:6 }, { label:'トップ掲載月', data:po, backgroundColor:C.orange, borderRadius:6 }]}, options: { responsive:true, maintainAspectRatio:false, scales:{ y:{ suggestedMax:300 }}}});
+  new Chart(document.getElementById('weekday'), { type:'bar', data: { labels:['月','火','水','木','金','土','日'], datasets:[{ data:[60,62,74,85,66,67,67], backgroundColor:['#9aa0a6','#9aa0a6','#9aa0a6',C.green,'#9aa0a6','#9aa0a6','#9aa0a6'], borderRadius:6 }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false }}}});
+  new Chart(document.getElementById('vodTop'), { type:'bar', data: { labels:['クラファン100%','プラチナ','マナーモード','身体だるい','楽しくかつ','ヴァロ','落ち着く声','ハンバーグ','夜珍しい','ねむるとvalo'], datasets:[{ label:'再生数', data:[5861,5380,5196,4796,4674,4611,4583,4242,4191,3950], backgroundColor:C.blue, borderRadius:6 }]}, options: { indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false }}}});
+  new Chart(document.getElementById('ytTraffic'), { type:'bar', data: { labels:['SHORTS','CHANNEL','SEARCH','SUB','OTHER','EXT'], datasets:[{ label:'VAL軸', data:[95.5,1.1,1.6,0.6,0.9,0.3], backgroundColor:C.primary, borderRadius:6 }, { label:'カメラ軸', data:[87.7,4.4,2.7,1.9,1.2,0.8], backgroundColor:C.secondary, borderRadius:6 }]}, options: { responsive:true, maintainAspectRatio:false, scales:{ y:{ ticks:{ callback: v=>v+'%' }}}}});
+  new Chart(document.getElementById('ytDemo'), { type:'bar', data: { labels:['13-17','18-24','25-34','35-44','45-54'], datasets:[
+    { label:'VAL軸 男', data:[11.2,27.2,41.3,6.4,4.4], backgroundColor:C.primary, stack:'val' },
+    { label:'VAL軸 女', data:[0.3,1.9,0,1.1,1.1], backgroundColor:'#9575cd', stack:'val' },
+    { label:'カメラ軸 男', data:[0,10.2,20.5,10.2,0], backgroundColor:C.secondary, stack:'cam' },
+    { label:'カメラ軸 女', data:[11.3,0,10.4,0,0], backgroundColor:'#f8bbd0', stack:'cam' }
+  ]}, options: { responsive:true, maintainAspectRatio:false, scales:{ y:{ stacked:true, ticks:{ callback: v=>v+'%' }}, x:{ stacked:true }}}});
+  new Chart(document.getElementById('valTop'), { type:'bar', data: { labels:['癖強ネオン','賑やかなヨル','タイの人サイファー','自認ネオン','Helloしか','スイフト面白','モールス信号','AIに聞いた','AIと漫才','新ビジュ'], datasets:[
+    { label:'再生数', data:[35426,25405,19963,18686,6088,4472,3856,2063,289,4], backgroundColor:C.primary, xAxisID:'x', borderRadius:6 },
+    { label:'登録獲得', data:[113,25,7,11,1,3,4,2,6,0], backgroundColor:C.green, xAxisID:'x2', borderRadius:6 }
+  ]}, options: { indexAxis:'y', responsive:true, maintainAspectRatio:false, scales:{ x:{ position:'top', title:{ display:true, text:'再生数' }}, x2:{ position:'bottom', title:{ display:true, text:'登録獲得' }, grid:{ display:false }}}}});
+  new Chart(document.getElementById('camTop'), { type:'bar', data: { labels:['名前間違えないで','ねむるの雑学','パクってないし','カメラ費用','関西弁ハーフ','リズム目閉じて','ミラーレス一眼','やること追い','実は','ガチ恋は'], datasets:[
+    { label:'再生数', data:[26798,21268,18891,17307,14065,12632,11851,9327,8036,7004], backgroundColor:C.secondary, xAxisID:'x', borderRadius:6 },
+    { label:'登録獲得', data:[115,36,46,35,8,8,23,0,0,0], backgroundColor:C.green, xAxisID:'x2', borderRadius:6 }
+  ]}, options: { indexAxis:'y', responsive:true, maintainAspectRatio:false, scales:{ x:{ position:'top', title:{ display:true, text:'再生数' }}, x2:{ position:'bottom', title:{ display:true, text:'登録獲得' }, grid:{ display:false }}}}});
+  new Chart(document.getElementById('retention'), { type:'line', data: { labels:['1%','5%','10%','25%','50%','75%','99%'], datasets:[
+    { label:'VAL軸 (癖強ネオン)', data:[1.397,1.146,0.934,0.692,0.570,0.522,0.455], borderColor:C.primary, tension:.3, fill:false, borderWidth:2.5 },
+    { label:'カメラ軸 (名前間違えないで)', data:[1.378,1.282,1.236,1.030,0.817,0.667,0.423], borderColor:C.secondary, tension:.3, fill:false, borderWidth:2.5 },
+    { label:'基準線 1.0', data:[1,1,1,1,1,1,1], borderColor:C.gray, borderDash:[4,4], pointRadius:0, tension:0 }
+  ]}, options: { responsive:true, maintainAspectRatio:false, scales:{ y:{ title:{ display:true, text:'audienceWatchRatio' }}}}});
+  new Chart(document.getElementById('xMonthly'), { type:'bar', data: { labels:['25-05','25-06','25-07','25-08','25-09','25-10','25-11','25-12','26-01','26-02','26-03','26-04','26-05'], datasets:[{ label:'Imp (推定)', data:[150,150,200,600,700,400,450,400,375,400,350,275,200], backgroundColor:['#9aa0a6','#9aa0a6','#9aa0a6',C.blue,C.green,C.blue,C.blue,C.blue,'#9aa0a6','#9aa0a6','#9aa0a6','#9aa0a6','#9aa0a6'], borderRadius:6 }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label: ctx=>`${ctx.parsed.y}K imp` }}}, scales:{ y:{ ticks:{ callback: v=>v+'K' }}}}});
+  new Chart(document.getElementById('xAge'), { type:'bar', data: { labels:['13-17','18-24','25-34','35-44','45-54','55-64','65+'], datasets:[{ data:[3.6,33.1,52.2,7.7,0.6,0.7,2.0], backgroundColor:C.primary, borderRadius:6 }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false }}, scales:{ y:{ ticks:{ callback: v=>v+'%' }}}}});
 
-  new Chart(document.getElementById('followerGain'), {
-    type: 'bar',
-    data: { labels: monthlyLabels, datasets: [{
-      label: 'フォロワー獲得', data: followerGain,
-      backgroundColor: monthlyLabels.map((_, i) => i === 4 ? C.green : C.accent2)
-    }]},
-    options: { responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: {
-        afterLabel: ctx => ctx.dataIndex === 4 ? '★最大月（2025-10）' : ''
-      }}}}
-  });
-
-  new Chart(document.getElementById('peakNormal'), {
-    type: 'bar',
-    data: { labels: monthlyLabels, datasets: [
-      { label: '通常運用', data: peakNormal, backgroundColor: C.blue },
-      { label: 'トップ掲載月', data: peakOutlier, backgroundColor: C.orange }
-    ]},
-    options: { responsive: true, maintainAspectRatio: false,
-      scales: { y: { suggestedMax: 300 }}}
-  });
-
-  new Chart(document.getElementById('weekday'), {
-    type: 'bar',
-    data: { labels: ['月','火','水','木','金','土','日'], datasets: [{
-      data: [60,62,74,85,66,67,67],
-      backgroundColor: ['#475569','#475569','#64748b',C.green,'#475569','#475569','#475569']
-    }]},
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }}}
-  });
-
-  new Chart(document.getElementById('vodTop'), {
-    type: 'bar',
-    data: {
-      labels: ['クラファン100%','プラチナ','マナーモード','身体だるい','楽しくかつ','ヴァロ','落ち着く声','ハンバーグ','夜珍しい','ねむるとvalo'],
-      datasets: [{ label: '再生数', data: [5861,5380,5196,4796,4674,4611,4583,4242,4191,3950], backgroundColor: C.blue }]
-    },
-    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }}}
-  });
-
-  new Chart(document.getElementById('ytTraffic'), {
-    type: 'bar',
-    data: { labels: ['SHORTS','CHANNEL','SEARCH','SUB','OTHER','EXT'], datasets: [
-      { label: 'VAL軸', data: [95.5,1.1,1.6,0.6,0.9,0.3], backgroundColor: C.blue },
-      { label: 'カメラ軸', data: [87.7,4.4,2.7,1.9,1.2,0.8], backgroundColor: C.accent2 }
-    ]},
-    options: { responsive: true, maintainAspectRatio: false,
-      scales: { y: { ticks: { callback: v => v + '%' }}}}
-  });
-
-  new Chart(document.getElementById('ytDemo'), {
-    type: 'bar',
-    data: { labels: ['13-17','18-24','25-34','35-44','45-54'], datasets: [
-      { label: 'VAL軸 男', data: [11.2,27.2,41.3,6.4,4.4], backgroundColor: C.blue, stack: 'val' },
-      { label: 'VAL軸 女', data: [0.3,1.9,0,1.1,1.1], backgroundColor: '#1e3a8a', stack: 'val' },
-      { label: 'カメラ軸 男', data: [0,10.2,20.5,10.2,0], backgroundColor: C.accent2, stack: 'cam' },
-      { label: 'カメラ軸 女', data: [11.3,0,10.4,0,0], backgroundColor: '#831843', stack: 'cam' }
-    ]},
-    options: { responsive: true, maintainAspectRatio: false,
-      scales: { y: { stacked: true, ticks: { callback: v => v + '%' }}, x: { stacked: true }}}
-  });
-
-  new Chart(document.getElementById('valTop'), {
-    type: 'bar',
-    data: {
-      labels: ['癖強ネオン','賑やかなヨル','タイの人サイファー','自認ネオン','Helloしか','スイフト面白','モールス信号','AIに聞いた','AIと漫才','新ビジュ'],
-      datasets: [
-        { label: '再生数', data: [35426,25405,19963,18686,6088,4472,3856,2063,289,4], backgroundColor: C.blue, xAxisID: 'x' },
-        { label: '登録獲得', data: [113,25,7,11,1,3,4,2,6,0], backgroundColor: C.green, xAxisID: 'x2' }
-      ]
-    },
-    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-      scales: {
-        x: { position: 'top', title: { display: true, text: '再生数' }},
-        x2: { position: 'bottom', title: { display: true, text: '登録獲得' }, grid: { display: false }}
-      }
-    }
-  });
-
-  new Chart(document.getElementById('camTop'), {
-    type: 'bar',
-    data: {
-      labels: ['名前間違えないで','ねむるの雑学','パクってないし','カメラ費用','関西弁ハーフ','リズム目閉じて','ミラーレス一眼','やること追い','実は','ガチ恋は'],
-      datasets: [
-        { label: '再生数', data: [26798,21268,18891,17307,14065,12632,11851,9327,8036,7004], backgroundColor: C.accent2, xAxisID: 'x' },
-        { label: '登録獲得', data: [115,36,46,35,8,8,23,0,0,0], backgroundColor: C.green, xAxisID: 'x2' }
-      ]
-    },
-    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-      scales: {
-        x: { position: 'top', title: { display: true, text: '再生数' }},
-        x2: { position: 'bottom', title: { display: true, text: '登録獲得' }, grid: { display: false }}
-      }
-    }
-  });
-
-  new Chart(document.getElementById('retention'), {
-    type: 'line',
-    data: { labels: ['1%','5%','10%','25%','50%','75%','99%'], datasets: [
-      { label: 'VAL軸 (癖強ネオン)', data: [1.397,1.146,0.934,0.692,0.570,0.522,0.455], borderColor: C.blue, tension: 0.3, fill: false },
-      { label: 'カメラ軸 (名前間違えないで)', data: [1.378,1.282,1.236,1.030,0.817,0.667,0.423], borderColor: C.accent2, tension: 0.3, fill: false },
-      { label: '基準線 1.0', data: [1,1,1,1,1,1,1], borderColor: C.gray, borderDash: [4,4], pointRadius: 0, tension: 0 }
-    ]},
-    options: { responsive: true, maintainAspectRatio: false,
-      scales: { y: { title: { display: true, text: 'audienceWatchRatio' }}}}
-  });
-
-  new Chart(document.getElementById('xMonthly'), {
-    type: 'bar',
-    data: { labels: ['25-05','25-06','25-07','25-08','25-09','25-10','25-11','25-12','26-01','26-02','26-03','26-04','26-05'],
-      datasets: [{
-        label: 'Impressions (推定)',
-        data: [150,150,200,600,700,400,450,400,375,400,350,275,200],
-        backgroundColor: ['#475569','#475569','#475569',C.blue,C.green,C.blue,C.blue,C.blue,'#475569','#475569','#475569','#475569','#475569']
-      }]},
-    options: { responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.parsed.y}K imp` }}},
-      scales: { y: { ticks: { callback: v => v + 'K' }}}}
-  });
-
-  new Chart(document.getElementById('xAge'), {
-    type: 'bar',
-    data: { labels: ['13-17','18-24','25-34','35-44','45-54','55-64','65+'],
-      datasets: [{ data: [3.6,33.1,52.2,7.7,0.6,0.7,2.0], backgroundColor: C.blue }]},
-    options: { responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }},
-      scales: { y: { ticks: { callback: v => v + '%' }}}}
-  });
-
-  // X Top posts
   const xTop = [
-    {date: '2026-02-07', imp: '266K', likes: '10K', rt: '1.1K', content: 'ｽﾋﾟｰﾄﾞ サイトエントリー (VAL切り抜き) ★Top1'},
-    {date: '2026-03-04', imp: '99K', likes: '185', rt: '3', content: '自分がキルした敵の武器取られるの許せない'},
-    {date: '2026-02-05', imp: '85K', likes: '246', rt: '8', content: 'チートかと思った'},
-    {date: '2026-04-03', imp: '64K', likes: '574', rt: '47', content: 'ど偏見キャラピック #VALORANT'},
-    {date: '2026-02-09', imp: '57K', likes: '2.6K', rt: '297', content: 'ｽﾋﾟｰﾄﾞ とスパイク'},
-    {date: '2026-03-30', imp: '48K', likes: '388', rt: '12', content: 'ツイ妻のフルパで年齢BAN'},
-    {date: '2026-02-06', imp: '40K', likes: '188', rt: '3', content: 'ナイトマーケット'},
-    {date: '2026-04-04', imp: '25K', likes: '150', rt: '2', content: 'ネオンの優しさに触れた日'},
-    {date: '2026-03-12', imp: '22K', likes: '209', rt: '8', content: 'ソロコンペで住所晒す野良'},
-    {date: '2026-03-13', imp: '18K', likes: '90', rt: '20', content: 'クラファン開始 LIVE2D'},
+    {date:'2026-02-07', imp:'266K', likes:'10K', rt:'1.1K', content:'ｽﾋﾟｰﾄﾞ サイトエントリー (VAL切り抜き) ★Top1'},
+    {date:'2026-03-04', imp:'99K', likes:'185', rt:'3', content:'自分がキルした敵の武器取られるの許せない'},
+    {date:'2026-02-05', imp:'85K', likes:'246', rt:'8', content:'チートかと思った'},
+    {date:'2026-04-03', imp:'64K', likes:'574', rt:'47', content:'ど偏見キャラピック #VALORANT'},
+    {date:'2026-02-09', imp:'57K', likes:'2.6K', rt:'297', content:'ｽﾋﾟｰﾄﾞ とスパイク'},
+    {date:'2026-03-30', imp:'48K', likes:'388', rt:'12', content:'ツイ妻のフルパで年齢BAN'},
+    {date:'2026-02-06', imp:'40K', likes:'188', rt:'3', content:'ナイトマーケット'},
+    {date:'2026-04-04', imp:'25K', likes:'150', rt:'2', content:'ネオンの優しさに触れた日'},
+    {date:'2026-03-12', imp:'22K', likes:'209', rt:'8', content:'ソロコンペで住所晒す野良'},
+    {date:'2026-03-13', imp:'18K', likes:'90', rt:'20', content:'クラファン開始 LIVE2D'}
   ];
-  document.getElementById('xTopPosts').innerHTML = xTop.map(p =>
-    `<tr class="border-t" style="border-color: var(--border)">
-      <td class="py-2 pr-3" style="color: var(--muted)">${p.date}</td>
-      <td class="py-2 pr-3 text-right font-bold">${p.imp}</td>
-      <td class="py-2 pr-3 text-right">${p.likes}</td>
-      <td class="py-2 pr-3 text-right">${p.rt}</td>
-      <td class="py-2">${p.content}</td>
-    </tr>`
-  ).join('');
+  document.getElementById('xTopPosts').innerHTML = xTop.map(p => `<tr><td style="color: var(--md-sys-color-on-surface-variant)">${p.date}</td><td class="num"><strong>${p.imp}</strong></td><td class="num">${p.likes}</td><td class="num">${p.rt}</td><td>${p.content}</td></tr>`).join('');
 </script>
+
 </body>
 </html>
