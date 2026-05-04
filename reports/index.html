@@ -238,4 +238,32 @@
     <div class="item">
       <div class="marker">予</div>
       <div class="item-card" style="opacity: .4; cursor: default; pointer-events: none">
-        <
+        <div class="date">2026-05-25 (月) 9:00 自動配信予定</div>
+        <div class="title">Post Live2D ベースライン v2.0</div>
+        <div class="summary">お披露目後7日間のリフト評価（KPI目標達成率の自動計算）</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>毎週月曜9時に Discord に週次レポート自動配信／<a href="../">ダッシュボードに戻る</a></p>
+    <p style="margin-top: 6px">Material Design 3 / Cowork Claude × Chrome MCP</p>
+  </footer>
+</main>
+
+<script>
+  (function(){
+    const k = 'nm-theme';
+    const root = document.documentElement;
+    const saved = localStorage.getItem(k);
+    if (saved) root.setAttribute('data-theme', saved);
+    else if (matchMedia('(prefers-color-scheme: dark)').matches) root.setAttribute('data-theme', 'dark');
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const cur = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', cur);
+      localStorage.setItem(k, cur);
+    });
+  })();
+</script>
+</body>
+</html>
