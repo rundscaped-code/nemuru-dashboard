@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 19 週次レポート 2026-05-04｜永遠ねむる Analytics</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E%F0%9F%93%88%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --md-sys-color-primary: #6750a4;
+    --md-sys-color-primary-container: #eaddff;
+    --md-sys-color-on-primary-container: #21005d;
+    --md-sys-color-secondary: #db2777;
+    --md-sys-color-secondary-container: #ffd9e2;
+    --md-sys-color-on-secondary-container: #3e0014;
+    --md-sys-color-tertiary: #f59e0b;
+    --md-sys-color-background: #fef7fa;
+    --md-sys-color-on-background: #1d1b20;
+    --md-sys-color-surface: #fef7ff;
+    --md-sys-color-on-surface: #1d1b20;
+    --md-sys-color-on-surface-variant: #49454f;
+    --md-sys-color-surface-container-low: #f7f2fa;
+    --md-sys-color-surface-container: #f3edf7;
+    --md-sys-color-surface-container-high: #ece6f0;
+    --md-sys-color-outline-variant: #cac4d0;
+    --md-sys-color-success: #2e7d32;
+    --md-sys-color-warning: #ea580c;
+    --md-sys-color-error: #b3261e;
+    --md-shape-md: 12px;
+    --md-shape-lg: 16px;
+    --md-shape-full: 9999px;
+  }
+  [data-theme="dark"] {
+    --md-sys-color-primary: #d0bcff;
+    --md-sys-color-primary-container: #4f378b;
+    --md-sys-color-on-primary-container: #eaddff;
+    --md-sys-color-secondary: #f48fb1;
+    --md-sys-color-secondary-container: #7e2954;
+    --md-sys-color-on-secondary-container: #ffd9e2;
+    --md-sys-color-background: #141218;
+    --md-sys-color-on-background: #e6e0e9;
+    --md-sys-color-surface: #141218;
+    --md-sys-color-on-surface: #e6e0e9;
+    --md-sys-color-on-surface-variant: #cac4d0;
+    --md-sys-color-surface-container-low: #1d1b20;
+    --md-sys-color-surface-container: #211f26;
+    --md-sys-color-surface-container-high: #2b2930;
+    --md-sys-color-outline-variant: #49454f;
+    --md-sys-color-success: #81c995;
+    --md-sys-color-warning: #fb923c;
+    --md-sys-color-error: #f2b8b5;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
+    font-family: 'Inter', 'Noto Sans JP', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+  .ms { font-family: 'Material Symbols Rounded'; font-size: 20px; vertical-align: middle; line-height: 1;}
+  .ms.sm { font-size: 18px; }
+  .container { max-width: 880px; margin: 0 auto; padding: 24px 16px 60px; }
+  .topbar { position: sticky; top: 0; z-index: 50;
+    background: color-mix(in oklab, var(--md-sys-color-surface) 90%, transparent);
+    backdrop-filter: saturate(180%) blur(16px);
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  }
+  .topbar-inner { max-width: 880px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; gap: 8px; height: 60px; }
+  .icon-btn { border: 0; background: transparent; cursor: pointer; width: 40px; height: 40px; border-radius: var(--md-shape-full); color: var(--md-sys-color-on-surface-variant); display: inline-flex; align-items: center; justify-content: center; }
+  .icon-btn:hover { background: var(--md-sys-color-surface-container); }
+  .breadcrumb { font-size: 13px; }
+  .breadcrumb a { color: var(--md-sys-color-primary); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: var(--md-shape-full); font-size: 12px; font-weight: 600; background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); }
+  h1 { font-size: clamp(28px, 4.5vw, 42px); margin: 12px 0 8px; line-height: 1.15; font-weight: 800; letter-spacing: -.01em; }
+  h1 .grad { background: linear-gradient(135deg, var(--md-sys-color-primary), var(--md-sys-color-secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .meta { color: var(--md-sys-color-on-surface-variant); font-size: 14px; }
+  h2 { font-size: 22px; margin: 36px 0 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  h2 .icon-circle { width: 32px; height: 32px; border-radius: var(--md-shape-full); background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); display: inline-flex; align-items: center; justify-content: center; }
+  h3 { font-size: 16px; margin: 20px 0 8px; font-weight: 600; }
+  p { margin: 0 0 12px; }
+  .card { background: var(--md-sys-color-surface-container-low); border-radius: var(--md-shape-lg); padding: 18px 20px; margin-bottom: 12px; }
+  .grid { display: grid; gap: 12px; }
+  .grid-2 { grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 720px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 720px) { .grid-4 { grid-template-columns: repeat(4, 1fr); } }
+  .grid-5 { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 720px) { .grid-5 { grid-template-columns: repeat(5, 1fr); } }
+  .stat { padding: 14px; background: var(--md-sys-color-surface-container-low); border-radius: var(--md-shape-md); }
+  .stat .label { font-size: 11px; color: var(--md-sys-color-on-surface-variant); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+  .stat .value { font-size: 22px; font-weight: 700; margin-top: 4px; line-height: 1.1; }
+  .stat .meta { font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 4px; }
+  .stat.warn .value { color: var(--md-sys-color-warning); }
+  .stat.err .value { color: var(--md-sys-color-error); }
+  .stat.ok .value { color: var(--md-sys-color-success); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px 10px; text-align: left; }
+  thead th { color: var(--md-sys-color-on-surface-variant); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+  tbody tr { border-top: 1px solid var(--md-sys-color-outline-variant); }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .neg { color: var(--md-sys-color-error); font-weight: 600; }
+  .pos { color: var(--md-sys-color-success); font-weight: 600; }
+  .banner { background: linear-gradient(135deg, color-mix(in oklab, var(--md-sys-color-tertiary) 12%, transparent), color-mix(in oklab, var(--md-sys-color-secondary) 6%, transparent)); border: 1px solid color-mix(in oklab, var(--md-sys-color-tertiary) 25%, transparent); border-radius: var(--md-shape-lg); padding: 18px; margin: 12px 0; }
+  .banner.alert { background: color-mix(in oklab, var(--md-sys-color-error) 8%, var(--md-sys-color-surface-container-low)); border: 1px solid color-mix(in oklab, var(--md-sys-color-error) 30%, transparent); }
+  .banner.info { background: color-mix(in oklab, var(--md-sys-color-primary) 8%, var(--md-sys-color-surface-container-low)); border: 1px solid color-mix(in oklab, var(--md-sys-color-primary) 30%, transparent); }
+  ul { padding-left: 20px; margin: 0 0 12px; }
+  li { margin-bottom: 6px; }
+  .countdown { background: linear-gradient(135deg, var(--md-sys-color-secondary-container), color-mix(in oklab, var(--md-sys-color-tertiary) 30%, var(--md-sys-color-secondary-container))); color: var(--md-sys-color-on-secondary-container); border-radius: var(--md-shape-lg); padding: 20px; text-align: center; margin: 16px 0; }
+  .countdown .num { font-size: 56px; font-weight: 800; line-height: 1; letter-spacing: -.02em; }
+  .countdown .lbl { font-size: 13px; font-weight: 600; opacity: .9; }
+  footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--md-sys-color-outline-variant); color: var(--md-sys-color-on-surface-variant); font-size: 12px; text-align: center; }
+  footer a { color: var(--md-sys-color-primary); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="./" class="icon-btn" title="履歴に戻る"><span class="ms">arrow_back</span></a>
+    <div style="flex: 1;">
+      <div class="breadcrumb">
+        <a href="../">📊 Dashboard</a>
+        <span style="margin: 0 6px; color: var(--md-sys-color-on-surface-variant)">/</span>
+        <a href="./">週次レポート</a>
+        <span style="margin: 0 6px; color: var(--md-sys-color-on-surface-variant)">/</span>
+        <span>2026-05-04 Week 19</span>
+      </div>
+    </div>
+    <button id="themeToggle" class="icon-btn" title="テーマ切替">
+      <span class="ms">contrast</span>
+    </button>
+  </div>
+</header>
+
+<main class="container">
+  <span class="pill"><span class="ms sm">insights</span>週次レポート</span>
+  <h1><span class="grad">Week 19</span> 週次レポート</h1>
+  <p class="meta">対象期間：2026-04-22 (水) 〜 2026-04-28 (火) ／ 配信日：2026-05-04 (月)</p>
+
+  <div class="banner info">
+    <h3 style="margin: 0 0 8px"><span class="ms" style="color: var(--md-sys-color-primary); vertical-align: middle">info</span> データ取得状況</h3>
+    <p style="margin: 0; font-size: 13px;">YouTube Analytics の最終取得日は <strong>2026-04-28</strong>（本日から6日前）。CSV更新が必要な閾値（7日）の直前。<strong>Week 18 レポート（5/2 配信）と数値ベースは同じ</strong>で、新規データは Twitch 月次（5/4 時点）と X 直近7日の更新分のみ反映。CSV 完全更新後に Week 19 中盤の差分を再計上予定。</p>
+  </div>
+
+  <h2><span class="icon-circle"><span class="ms sm">priority_high</span></span>今週の重要数字 Top5</h2>
+  <div class="grid grid-5">
+    <div class="stat">
+      <div class="label">Twitch Followers</div>
+      <div class="value">3,973</div>
+      <div class="meta">5月 +4 / 平均 +215/月</div>
+    </div>
+    <div class="stat warn">
+      <div class="label">VAL軸 今週再生</div>
+      <div class="value">12,756</div>
+      <div class="meta">前週比 -73.7%</div>
+    </div>
+    <div class="stat err">
+      <div class="label">カメラ軸 今週再生</div>
+      <div class="value">37</div>
+      <div class="meta">全期間平均比 -99.7%</div>
+    </div>
+    <div class="stat ok">
+      <div class="label">VAL軸 純増</div>
+      <div class="value">+17</div>
+      <div class="meta">獲得 +18 / 喪失 -1</div>
+    </div>
+    <div class="stat">
+      <div class="label">5/20 まで</div>
+      <div class="value">16日</div>
+      <div class="meta">Live2D × 誕生日</div>
+    </div>
+  </div>
+
+  <div class="banner alert">
+    <h3 style="margin: 0 0 8px"><span class="ms" style="color: var(--md-sys-color-error); vertical-align: middle">warning</span> 異常値検知（ファクトのみ）</h3>
+    <ul style="margin: 0; padding-left: 20px;">
+      <li><strong>カメラ軸：</strong>今週再生 37（全期間平均 11,078／週 比 <span class="neg">-99.7%</span>）。長尺=Twitch自動アーカイブ流入が完全停止状態。前週 107 からさらに <span class="neg">-65.4%</span>。</li>
+      <li><strong>Twitch：</strong>2026-05 月初4日時点でフォロワー獲得 +4（全期間月平均 +215／月平均比 -98%）。配信時間 4.2h（前月4月 157h／月割 5.2h/日 → 5月初は同水準）。</li>
+      <li><strong>VAL軸：</strong>今週再生 12,756（前週比 <span class="neg">-73.7%</span> / 全期間平均 18,768／週 比 -32.0%）。前週 48,421 のスパイクからの反動。</li>
+      <li><strong>データ更新ラグ：</strong>YouTube Analytics CSV最終日 2026-04-28（本日から6日前）。閾値7日まで残り1日。</li>
+    </ul>
+  </div>
+
+  <h2><span class="icon-circle" style="background: #ffd9e2; color: #3e0014"><span class="ms sm">live_tv</span></span>Twitch（メイン主戦場）</h2>
+  <div class="card">
+    <div class="grid grid-3">
+      <div><div class="meta">フォロワー累計</div><strong>3,973人</strong><div class="meta" style="margin-top: 2px">2026-05-04 時点（Week 18 から横ばい）</div></div>
+      <div><div class="meta">今月獲得（5月）</div><strong>+4人</strong><div class="meta" style="margin-top: 2px">月初4日経過</div></div>
+      <div><div class="meta">配信時間（5月）</div><strong>4.2h</strong></div>
+      <div><div class="meta">平均同接（5月）</div><strong>52人</strong><div class="meta" style="margin-top: 2px">全期間 88.4</div></div>
+      <div><div class="meta">ピーク同接（5月）</div><strong>74人</strong></div>
+      <div><div class="meta">前月（4月）獲得</div><strong>+82人</strong></div>
+    </div>
+  </div>
+  <h3>月次フォロワー獲得トレンド（直近）</h3>
+  <table>
+    <thead><tr><th>月</th><th class="num">獲得</th><th class="num">累計</th><th class="num">ピーク同接</th><th class="num">平均同接</th></tr></thead>
+    <tbody>
+      <tr><td>2026-05（月初4日）</td><td class="num">+4</td><td class="num">3,973</td><td class="num">74</td><td class="num">52</td></tr>
+      <tr><td>2026-04</td><td class="num">+82</td><td class="num">3,969</td><td class="num">116</td><td class="num">66</td></tr>
+      <tr><td>2026-03</td><td class="num">+87</td><td class="num">3,887</td><td class="num">1,727</td><td class="num">139</td></tr>
+      <tr><td>2026-02</td><td class="num">+95</td><td class="num">3,800</td><td class="num"><strong>2,129</strong></td><td class="num">165</td></tr>
+      <tr><td>全期間平均</td><td class="num">+215.5/月</td><td class="num">—</td><td class="num">—</td><td class="num">88.4</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="icon-circle" style="background: #fde7e9; color: #b3261e"><span class="ms sm">play_circle</span></span>YouTube</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <h3 style="margin-top: 0">VAL軸（眠り姫）</h3>
+      <table>
+        <tr><td>今週再生</td><td class="num"><strong>12,756</strong></td></tr>
+        <tr><td>前週再生</td><td class="num">48,421</td></tr>
+        <tr><td>WoW（再生）</td><td class="num"><span class="neg">-73.7%</span></td></tr>
+        <tr><td>全期間平均比（再生）</td><td class="num"><span class="neg">-32.0%</span></td></tr>
+        <tr><td>登録獲得 / 喪失</td><td class="num">+18 / -1</td></tr>
+        <tr><td>純増</td><td class="num"><strong class="pos">+17</strong></td></tr>
+        <tr><td>視聴時間</td><td class="num">3,218分</td></tr>
+        <tr><td>全期間平均（再生/週）</td><td class="num">18,768</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3 style="margin-top: 0">カメラ軸（永遠ねむる）</h3>
+      <table>
+        <tr><td>今週再生</td><td class="num"><strong class="neg">37</strong></td></tr>
+        <tr><td>前週再生</td><td class="num">107</td></tr>
+        <tr><td>WoW（再生）</td><td class="num"><span class="neg">-65.4%</span></td></tr>
+        <tr><td>全期間平均比（再生）</td><td class="num"><span class="neg">-99.7%</span></td></tr>
+        <tr><td>登録獲得 / 喪失</td><td class="num">+2 / -1</td></tr>
+        <tr><td>純増</td><td class="num">+1</td></tr>
+        <tr><td>視聴時間</td><td class="num">26分</td></tr>
+        <tr><td>全期間平均（再生/週）</td><td class="num">11,078</td></tr>
+      </table>
+    </div>
+  </div>
+  <p style="font-size: 12px; color: var(--md-sys-color-on-surface-variant); margin-top: 4px;">※ カメラ軸の長尺はTwitch自動アーカイブが流入経路の主体。今週はTwitch配信時間の縮小と連動して再生も縮小。</p>
+
+  <h2><span class="icon-circle" style="background: #d8e6f7; color: #1565c0"><span class="ms sm">alternate_email</span></span>X（VAL軸 @numuru_zz）</h2>
+  <div class="card">
+    <div class="grid grid-4">
+      <div class="stat" style="background: var(--md-sys-color-surface-container)"><div class="label">7日 Imp</div><div class="value">52.8K</div><div class="meta">直近7日</div></div>
+      <div class="stat" style="background: var(--md-sys-color-surface-container)"><div class="label">7日 ER</div><div class="value">5.5%</div><div class="meta">eng 2,900</div></div>
+      <div class="stat" style="background: var(--md-sys-color-surface-container)"><div class="label">プロフ訪問</div><div class="value">433</div><div class="meta">7日</div></div>
+      <div class="stat" style="background: var(--md-sys-color-surface-container)"><div class="label">5月 Imp推定</div><div class="value">200K</div><div class="meta">直近28日</div></div>
+    </div>
+    <h3>月次インプレッション推移（推定）</h3>
+    <table>
+      <thead><tr><th>月</th><th class="num">Imp（推定）</th><th>備考</th></tr></thead>
+      <tbody>
+        <tr><td>2026-05</td><td class="num">200,000</td><td>直近28日推定</td></tr>
+        <tr><td>2026-04</td><td class="num">275,000</td><td></td></tr>
+        <tr><td>2026-03</td><td class="num">350,000</td><td></td></tr>
+        <tr><td>2026-02</td><td class="num">400,000</td><td></td></tr>
+        <tr><td>2025-09</td><td class="num"><strong>700,000</strong></td><td>過去ピーク</td></tr>
+        <tr><td>1Y累計</td><td class="num"><strong>6.9M</strong></td><td>ER 3.5%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2><span class="icon-circle" style="background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container)"><span class="ms sm">cake</span></span>5/20 カウントダウン</h2>
+  <div class="countdown">
+    <div class="num">16</div>
+    <div class="lbl">日後 ／ 5/20 (火) Live2Dお披露目 × 誕生日</div>
+  </div>
+
+  <h2><span class="icon-circle"><span class="ms sm">fact_check</span></span>今週の観察事実（ファクトのみ）</h2>
+  <ul>
+    <li>VAL軸：今週再生 12,756（前週比 <span class="neg">-73.7%</span> / 全期間平均比 -32.0%）</li>
+    <li>VAL軸：今週純増 +17人（獲得 +18 / 喪失 -1）</li>
+    <li>カメラ軸：今週再生 37（前週比 -65.4% / 全期間平均比 <span class="neg">-99.7%</span>）</li>
+    <li>カメラ軸：今週純増 +1人（獲得 +2 / 喪失 -1）</li>
+    <li>Twitch 2026-05（月初4日）：フォロワー +4 / 配信時間 4.2h / ピーク同接 74 / 平均同接 52</li>
+    <li>X 直近7日：Imp 52,800 / ER 5.5% / engagements 2,900 / プロフィール訪問 433</li>
+    <li>X 5月推定 Imp 200K（4月 275K → -27%、ピーク 9月の700K比 -71%）</li>
+    <li>YouTube Analytics CSV 最終日 2026-04-28（6日経過、閾値7日まで残り1日）</li>
+  </ul>
+
+  <footer>
+    <p><a href="./">← 週次レポート履歴に戻る</a> ／ <a href="../">📊 ダッシュボード</a></p>
+    <p style="margin-top: 6px">Cowork Claude × Chrome MCP / Material Design 3 ／ 自動配信</p>
+  </footer>
+</main>
+
+<script>
+  (function(){
+    const k = 'nm-theme';
+    const root = document.documentElement;
+    const saved = localStorage.getItem(k);
+    if (saved) root.setAttribute('data-theme', saved);
+    else if (matchMedia('(prefers-color-scheme: dark)').matches) root.setAttribute('data-theme', 'dark');
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const cur = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', cur);
+      localStorage.setItem(k, cur);
+    });
+  })();
+</script>
+</body>
+</html>

@@ -163,8 +163,27 @@
   <p class="subtitle">毎週月曜9時に自動配信される週次分析の履歴。新しい順に表示。</p>
 
   <div class="timeline" id="timeline">
-    <!-- レポート 5/2 Week 18 週次 -->
+    <!-- レポート 5/4 Week 19 週次 -->
     <div class="item now">
+      <div class="marker">19</div>
+      <a href="2026-05-04-weekly.html" class="item-card">
+        <div class="date">2026-05-04 (月) ・ 週次</div>
+        <div class="title">Week 19 - Pre Live2D 第2回（データ継続観測）</div>
+        <div class="summary">対象期間 4/22-4/28。CSV最終日 4/28（閾値7日の前日）でデータベース横ばい。Twitch 5月初4日 +4／配信4.2h／5/20まで残り16日。</div>
+        <div class="stats">
+          <span><span class="ms sm">live_tv</span><strong>3,973</strong> Twitch (+4/月)</span>
+          <span><span class="ms sm">play_circle</span><strong>12,756</strong> VAL再生</span>
+          <span><span class="ms sm">play_circle</span><strong>37</strong> カメラ再生</span>
+          <span><span class="ms sm">cake</span><strong>16</strong> 日後 (5/20)</span>
+        </div>
+        <div style="margin-top: 12px;">
+          <span class="arrow">詳細を見る <span class="ms sm">arrow_forward</span></span>
+        </div>
+      </a>
+    </div>
+
+    <!-- レポート 5/2 Week 18 週次 -->
+    <div class="item">
       <div class="marker">18</div>
       <a href="2026-05-02-weekly.html" class="item-card">
         <div class="date">2026-05-02 (土) ・ 週次</div>
@@ -219,32 +238,4 @@
     <div class="item">
       <div class="marker">予</div>
       <div class="item-card" style="opacity: .4; cursor: default; pointer-events: none">
-        <div class="date">2026-05-25 (月) 9:00 自動配信予定</div>
-        <div class="title">Post Live2D ベースライン v2.0</div>
-        <div class="summary">お披露目後7日間のリフト評価（KPI目標達成率の自動計算）</div>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    <p>毎週月曜9時に Discord に週次レポート自動配信／<a href="../">ダッシュボードに戻る</a></p>
-    <p style="margin-top: 6px">Material Design 3 / Cowork Claude × Chrome MCP</p>
-  </footer>
-</main>
-
-<script>
-  (function(){
-    const k = 'nm-theme';
-    const root = document.documentElement;
-    const saved = localStorage.getItem(k);
-    if (saved) root.setAttribute('data-theme', saved);
-    else if (matchMedia('(prefers-color-scheme: dark)').matches) root.setAttribute('data-theme', 'dark');
-    document.getElementById('themeToggle').addEventListener('click', () => {
-      const cur = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      root.setAttribute('data-theme', cur);
-      localStorage.setItem(k, cur);
-    });
-  })();
-</script>
-</body>
-</html>
+        <
