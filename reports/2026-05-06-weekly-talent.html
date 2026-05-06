@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ねむるさんへ 5/6｜永遠ねむる Analytics</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E%F0%9F%93%8B%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c-pink: #ec4899;
+    --c-pink-soft: #ffd9e2;
+    --c-purple: #6750a4;
+    --c-purple-soft: #eaddff;
+    --c-bg: #fef7fa;
+    --c-text: #1d1b20;
+    --c-muted: #6b6b85;
+    --c-border: #e3d9e8;
+    --c-card: #ffffff;
+    --c-success: #2e7d32;
+    --c-warn: #ea580c;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+  }
+  .ms { font-family: 'Material Symbols Rounded'; vertical-align: middle; line-height: 1; }
+  .container { max-width: 720px; margin: 0 auto; padding: 24px 18px 60px; }
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(254, 247, 250, 0.92); backdrop-filter: blur(14px); border-bottom: 1px solid var(--c-border); }
+  .topbar-inner { max-width: 720px; margin: 0 auto; padding: 0 16px; height: 56px; display: flex; align-items: center; gap: 10px; }
+  .topbar a { color: var(--c-purple); text-decoration: none; font-size: 13px; }
+
+  .header-section {
+    padding: 24px 0 16px;
+    border-bottom: 1px solid var(--c-border);
+    margin-bottom: 24px;
+  }
+  .pill {
+    display: inline-block; padding: 4px 12px; background: var(--c-pink-soft);
+    border-radius: 999px; font-size: 12px; font-weight: 600; color: #831843;
+  }
+  h1 { margin: 12px 0 6px; font-size: clamp(22px, 4.5vw, 28px); font-weight: 700; letter-spacing: -.01em; line-height: 1.3; }
+  .subtitle { font-size: 13px; color: var(--c-muted); }
+
+  h2 {
+    font-size: 17px; margin: 32px 0 12px; font-weight: 700;
+    padding-bottom: 6px; border-bottom: 2px solid var(--c-pink-soft);
+    display: inline-block;
+  }
+  h3 { font-size: 14px; margin: 16px 0 8px; font-weight: 600; color: var(--c-purple); }
+
+  p { margin: 0 0 12px; font-size: 14px; }
+
+  .card {
+    background: var(--c-card); border-radius: 12px; padding: 18px 20px;
+    margin-bottom: 12px; border: 1px solid var(--c-border);
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .stat {
+    background: var(--c-card); border-radius: 10px; padding: 12px 14px;
+    border: 1px solid var(--c-border);
+  }
+  .stat .label { font-size: 11px; color: var(--c-muted); }
+  .stat .value { font-size: 20px; font-weight: 700; margin-top: 2px; line-height: 1.2; }
+  .stat .delta { font-size: 11px; margin-top: 2px; }
+  .delta.up { color: var(--c-success); }
+  .delta.down { color: var(--c-warn); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 7px 10px; text-align: left; }
+  thead th { color: var(--c-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; }
+  tbody tr { border-top: 1px solid var(--c-border); }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  ul { padding-left: 18px; margin: 0 0 14px; }
+  li { margin-bottom: 5px; font-size: 14px; }
+
+  .note {
+    background: #f7f2fa;
+    border-left: 3px solid var(--c-purple);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #4a154b;
+    margin: 14px 0;
+  }
+
+  .footer {
+    text-align: center; margin-top: 50px; padding-top: 24px;
+    border-top: 1px solid var(--c-border);
+    color: var(--c-muted); font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="./">← 履歴</a>
+    <span style="color: var(--c-muted); font-size: 12px;">/ ねむるさん向け</span>
+  </div>
+</header>
+
+<main class="container">
+
+<div class="header-section">
+  <span class="pill">📋 ねむるさん向け週次レポート</span>
+  <h1>2026/05/06 の週次まとめ</h1>
+  <div class="subtitle">対象期間：2026-04-04〜2026-05-05（28配信）／ 5/20 Live2Dお披露目まで14日</div>
+</div>
+
+<h2>5月入ってからの動き</h2>
+
+<div class="card">
+  <div class="stat-row">
+    <div class="stat"><div class="label">5月平均同接</div><div class="value">74</div><div class="delta up">4月平均64.5から +15%</div></div>
+    <div class="stat"><div class="label">5月のピーク</div><div class="value">177</div><div class="delta up">5/1配信／4月Max 144より +23%</div></div>
+    <div class="stat"><div class="label">5月新規Sub合計</div><div class="value">14</div><div class="delta">3配信ぶん</div></div>
+  </div>
+  <p>5月初頭の3配信は、4月平均より同接が15%ほど高く出てる。直近に向かって数字が上向いてるのは事実。</p>
+</div>
+
+<h2>応援している人の規模感</h2>
+
+<div class="card">
+  <table>
+    <tbody>
+      <tr><td>Twitchフォロワー</td><td class="num"><strong>4,000</strong></td></tr>
+      <tr><td>サブスクライバー（合計）</td><td class="num">134（T1:130 / T2:3 / T3:3）</td></tr>
+      <tr><td>30日でフォロー増加</td><td class="num">+146</td></tr>
+      <tr><td>30日のユニーク視聴者数</td><td class="num">28,824</td></tr>
+      <tr><td>30日のチャット参加者数（ユニーク）</td><td class="num">332</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <strong>コア層の規模感：</strong>30日で332人がチャットに参加。フォロワー4,000人に対して8.3%。これがいわゆる「コアファン」の上限値。Tier3サブのうち1人は月642スタンプ使ってて、平均すると配信1回で20〜30回スタンプ押してる計算。
+  </div>
+</div>
+
+<h2>4月後半に起きたこと</h2>
+
+<div class="card">
+  <h3>クラファン期にサブ獲得が末週集中</h3>
+  <table>
+    <thead><tr><th>日</th><th>配信時間</th><th class="num">同接</th><th class="num">新規Sub</th></tr></thead>
+    <tbody>
+      <tr><td>4/27</td><td>5h11m</td><td class="num">86</td><td class="num"><strong>+21</strong>（28配信中最高）</td></tr>
+      <tr><td>4/26</td><td>6h13m</td><td class="num">73</td><td class="num">+16</td></tr>
+      <tr><td>4/25</td><td>6h45m</td><td class="num">66</td><td class="num">+12</td></tr>
+      <tr><td>4/30</td><td>8h50m</td><td class="num">70</td><td class="num">+8（クラファン100%達成回）</td></tr>
+    </tbody>
+  </table>
+  <p>4月のサブ獲得合計101のうち、約58%が末週6配信に集中してた。サブスクギフトの収益も前期の<strong>4倍</strong>（$36→$148）。</p>
+  <div class="note">
+    <strong>事実として読み取れる傾向：</strong>「クラファンや節目イベントがある週は、サブ・ギフトの動きが普段の数倍になる」。これは1回限りの偶然ではなく、ファンの応援パターンとしてデータに出てる。5/20でも同じ動きが起きる可能性は高い。
+  </div>
+</div>
+
+<h2>視聴者の構成</h2>
+
+<div class="card">
+  <ul>
+    <li>男性 92% / 20-30代が68%</li>
+    <li>日本国内 99.95%</li>
+    <li>視聴者が他に見てる配信：VALORANT 51% / 雑談 7% / FPS関連（APEX/OW/LoL）各5%</li>
+    <li>iOS 60% / Android 20% / Web 20%</li>
+  </ul>
+  <p>VALORANT中心の方針で、視聴者層もVAL/FPS好きが大半。「ねむる＝VAL VTuber」のブランドポジションは数字上明確に取れてる。</p>
+</div>
+
+<h2>配信時間と数字の関係</h2>
+
+<div class="card">
+  <table>
+    <thead><tr><th>配信時間</th><th class="num">件数</th><th class="num">平均同接</th><th class="num">新規Sub平均</th></tr></thead>
+    <tbody>
+      <tr><td>1〜4時間</td><td class="num">2</td><td class="num">45</td><td class="num">6.5</td></tr>
+      <tr><td>4〜6時間</td><td class="num">10</td><td class="num">66</td><td class="num">3.8</td></tr>
+      <tr><td>6〜8時間</td><td class="num">14</td><td class="num">68</td><td class="num">4.0</td></tr>
+      <tr><td>8時間以上</td><td class="num">1</td><td class="num">70</td><td class="num">8.0</td></tr>
+    </tbody>
+  </table>
+  <p>長く配信するほど同接やチャット参加者は増える。一方Sub獲得は配信時間とは関係が薄く、「クラファン週末」など特定タイミングに集中してる。</p>
+  <div class="note">
+    <strong>解釈：</strong>長配信＝既存ファンと一緒にいる時間として機能してる。Subが入るのは「配信中の特定の瞬間」「節目のイベント」依存で、時間の長さでは決まらない。
+  </div>
+</div>
+
+<h2>収益（Twitchのみ・直近30日）</h2>
+
+<div class="card">
+  <table>
+    <thead><tr><th>項目</th><th class="num">今期</th><th class="num">前期比</th></tr></thead>
+    <tbody>
+      <tr><td>サブスク（合計）</td><td class="num">$304.84</td><td class="num up">+39.9%</td></tr>
+      <tr><td>　└ サブスクギフト</td><td class="num">$148.32</td><td class="num up">+301%</td></tr>
+      <tr><td>　└ 通常サブスク</td><td class="num">$132.02</td><td class="num down">-12%</td></tr>
+      <tr><td>ビッツ</td><td class="num">$14.32</td><td class="num down">-67%</td></tr>
+      <tr><td>広告</td><td class="num">$74.39</td><td class="num down">-43%</td></tr>
+      <tr><td><strong>合計</strong></td><td class="num"><strong>$393.54</strong></td><td class="num">+0.4%（横ばい）</td></tr>
+    </tbody>
+  </table>
+  <p>合計は前月とほぼ同じ。ただし内訳が変化してて、ギフトサブが大きく伸びた一方でビッツと広告は減ってる。</p>
+</div>
+
+<h2>5/20について（事実だけ）</h2>
+
+<div class="card">
+  <ul>
+    <li>5/20＝Live2Dお披露目＝ねむるさんの誕生日。重なる節目イベント</li>
+    <li>過去のクラファン期では、サブ・ギフトが普段の4倍に跳ねた</li>
+    <li>5/22（木）は曜日別の同接が一番高い日（普段+30%）</li>
+    <li>5月初頭から同接の数字は上向き傾向にある</li>
+  </ul>
+  <div class="note">
+    <strong>事実から読み取れること：</strong>節目で応援が集中するパターンは過去データで実証されている。誕生日×Live2Dの重なる5/20は、再現が起きうる条件が揃ってる週。ただし保証ではない。
+  </div>
+</div>
+
+<h2>注意点（数字として動きがあるもの）</h2>
+
+<div class="card">
+  <ul>
+    <li><strong>ビッツ・広告収益が継続的に減少</strong>：3か月続いてるトレンド。5月後半の数字でこれが構造的なものか一時的なものか判別できる</li>
+    <li><strong>Plus Program L1</strong>：3か月連続達成が条件で60/40分配を維持できる仕組み。月別ポイントが2月81→3月70→4月64→現在10で減少傾向。失効すると分配率が50/50に戻り収益は約20%減</li>
+  </ul>
+</div>
+
+<div class="footer">
+  詳しい数字版（相関分析含む）は<a href="2026-05-06-weekly-detail.html" style="color: var(--c-purple);">こちら</a>
+</div>
+
+</main>
+
+</body>
+</html>
